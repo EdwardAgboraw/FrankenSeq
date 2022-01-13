@@ -9,7 +9,7 @@ launch_FrankenSeq = function() {
 
 shinyApp(
 
-    ui = ui_2,
+    ui = ui,
     server = server
 
     )
