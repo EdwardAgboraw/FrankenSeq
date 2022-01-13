@@ -2,8 +2,8 @@
 library(shiny)
 
 
-source('ui.R')
-source('server.R')
+#source('ui.R')
+#source('server.R')
 
 launch_FrankenSeq = function() {
 

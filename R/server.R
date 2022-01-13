@@ -7,10 +7,10 @@ library(SC3)
 library(DUBStepR)
 library(M3Drop)
 
-source('clusterMethods.R')
-source('featureSelection.R')
-source('dimensionReduction.R')
-source('LoadData.R')
+#source('clusterMethods.R')
+#source('featureSelection.R')
+#source('dimensionReduction.R')
+#source('LoadData.R')
 
 server = function(input,output) {
 
