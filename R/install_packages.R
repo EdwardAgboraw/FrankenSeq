@@ -10,6 +10,7 @@ if (!requireNamespace("remotes", quietly = TRUE))
 
 
 #General Framework
+install.packages("dplyr")
 install.packages("shiny")
 install.packages("Seurat")
 install.packages("shinythemes")
