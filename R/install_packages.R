@@ -1,6 +1,12 @@
 
 #Basic Framework Installation Package
 
+#' basic framework
+#'
+#' @return
+#' @export
+#'
+#' @examples
 basic_framework = function() {
 
     if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -44,6 +50,12 @@ basic_framework = function() {
 }
 
 
+#' cluster_validation
+#'
+#' @return
+#' @export
+#'
+#' @examples
 cluster_validation = function() {
 
   #For Cluster Validation
@@ -54,6 +66,12 @@ cluster_validation = function() {
 }
 
 
+#' deep_learning
+#'
+#' @return
+#' @export
+#'
+#' @examples
 deep_learning = function() {
 
   install.packages("scDHA")
