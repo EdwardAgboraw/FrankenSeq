@@ -1,47 +1,65 @@
 
-#Package Installation:
+#Basic Framework Installation Package
 
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
+basic_framework = function() {
 
-
-if (!requireNamespace("remotes", quietly = TRUE))
-    install.packages("remotes")
+    if (!requireNamespace("BiocManager", quietly = TRUE))
+        install.packages("BiocManager")
 
 
-#General Framework
-install.packages("dplyr")
-install.packages("shiny")
-install.packages("Seurat")
-install.packages("shinythemes")
-install.packages("shinycssloaders")
-install.packages("magrittr")
+    if (!requireNamespace("remotes", quietly = TRUE))
+        install.packages("remotes")
 
-BiocManager::install("SingleCellExperiment")
+    #Background:
 
-#For Feature Selection
-install.packages("DUBStepR")
+    install.packages("dplyr")
+    install.packages("shiny")
+    install.packages("Seurat")
+    install.packages("shinythemes")
+    install.packages("shinycssloaders")
+    install.packages("magrittr")
 
-BiocManager::install("M3Drop")
+    BiocManager::install("SingleCellExperiment")
 
-#For Dimension Reduction
-install.packages("VGAM")
+    #For Feature Selection
+    install.packages("DUBStepR")
 
-remotes::install_github('satijalab/seurat-wrappers')
+    BiocManager::install("M3Drop")
 
-BiocManager::install("scry")
+    #For Dimension Reduction
+    install.packages("VGAM")
 
-#For Cluster Validation
-install.packages("NbClust")
-install.packages("ggplot2")
-install.packages("factoextra")
+    remotes::install_github('satijalab/seurat-wrappers')
 
-#For Cluster Analysis
-BiocManager::install("HGC")
-BiocManager::install("monocle")
-BiocManager::install("SC3")
+    BiocManager::install("scry")
 
-install.packages("scDHA")
+    #For Cluster Analysis
+    BiocManager::install("HGC")
+    BiocManager::install("monocle")
+    BiocManager::install("SC3")
 
-BiocManager::install("bluster")
-install.packages("dynamicTreeCut")
+    BiocManager::install("bluster")
+    install.packages("dynamicTreeCut")
+
+}
+
+
+cluster_validation = function() {
+
+  #For Cluster Validation
+  install.packages("NbClust")
+  install.packages("ggplot2")
+  install.packages("factoextra")
+
+}
+
+
+deep_learning = function() {
+
+  install.packages("scDHA")
+
+}
+
+
+
+
