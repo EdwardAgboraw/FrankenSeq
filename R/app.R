@@ -2,9 +2,13 @@
 library(shiny)
 
 
-#source('ui.R')
-#source('server.R')
 
+#' Launches the GUI
+#'
+#' @return
+#' @export
+#'
+#' @examples
 launch_FrankenSeq = function() {
 
 shinyApp(
