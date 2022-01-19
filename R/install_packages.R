@@ -3,7 +3,7 @@
 
 #' basic framework
 #'
-#' @return
+#' @return None
 #' @export
 #'
 #' @examples
