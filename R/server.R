@@ -390,6 +390,12 @@ server = function(input,output) {
 
     output$degPlot = renderPlot({
 
+        if(is.null(Clustered_Data())) {
+
+            return(NULL)
+
+        }
+
         sO = Clustered_Data()
 
         lfc = input$LFC
