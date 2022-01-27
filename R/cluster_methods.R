@@ -280,6 +280,8 @@ autoEncoderClusterring = function(sO, noDim, kv, core_num, reductionMethod, meth
 
     expr_mat = GetAssayData(object = sO, slot = "counts") #extract data
 
+    expr_mat = as.matrix(expr_mat)
+
     expr_mat = t(expr_mat) #transpose the data
 
     expr_mat = log2(expr_mat + 1)

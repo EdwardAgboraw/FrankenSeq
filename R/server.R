@@ -427,4 +427,87 @@ server = function(input,output) {
         return(DEG_Table)
 
     })
+
+    #Deep Learning
+
+    DeepLearning_Data = reactiveVal()
+
+    output$DL_Plot = renderPlot({
+
+        if(is.null(DimRData())) {
+
+            return(NULL)
+
+        }
+
+        #Variables
+
+        sO = DimRData()
+
+        k_value = input$DL_Knumber
+
+        noDim = input$DL_dimensions
+
+        core_number = input$DL_ncore
+
+        method1 = DimMethod()
+
+        reductionMethod = input$DL_cv
+
+        #DL Function Call
+
+        ha = autoEncoderClusterring(sO, noDim, k_value, core_number, reductionMethod, method1) #ha_fs_option, ha_cl_option)
+
+        DeepLearning_Data(ha$data)
+
+        return(ha$plot)
+
+    })
+
+
+    output$DL_Table = renderTable({
+
+        if(is.null(DeepLearning_Data())) {
+
+            return(NULL)
+
+        }
+
+        sO = DeepLearning_Data()
+
+        tableChoice = input$DL_TableOptions
+
+        if (tableChoice == "Summary Report") {
+
+            Dsummary = table(Idents(sO))
+
+            Dsummary = as.data.frame(Dsummary)
+
+            colnames(Dsummary) = c("Cluster", "Frequency")
+
+            FinalDataTable(Dsummary)
+
+            return(Dsummary)
+
+        } else {
+
+            results = as.data.frame(sO@active.ident)
+
+            colnames(results) = "Cluster"
+
+            results = cbind(rownames(results), data.frame(results, row.names = NULL))
+
+            colnames(results) = c("Cell Label", "Cluster")
+
+            #results = results[order(results$Cluster), ]
+
+            FinalDataTable(results)
+
+            return(results)
+
+        }
+
+
+    })
+
 }
