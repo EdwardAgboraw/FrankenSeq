@@ -465,6 +465,22 @@ server = function(input,output) {
     })
 
 
+    output$dl_seurat <- downloadHandler(
+
+        filename = "DL_SeuratObject.txt",
+
+        contentType = "RDS",
+
+        content = function(file) {
+
+            saveRDS(DeepLearning_Data(), file)
+        }
+    )
+
+
+
+    DL_DataTable = reactiveVal()
+
     output$DL_Table = renderTable({
 
         if(is.null(DeepLearning_Data())) {
@@ -485,7 +501,7 @@ server = function(input,output) {
 
             colnames(Dsummary) = c("Cluster", "Frequency")
 
-            FinalDataTable(Dsummary)
+            DL_DataTable(Dsummary)
 
             return(Dsummary)
 
@@ -501,13 +517,26 @@ server = function(input,output) {
 
             results = results[order(results$Cluster), ]
 
-            FinalDataTable(results)
+            DL_DataTable(results)
 
             return(results)
-
         }
 
     })
+
+
+    output$dl_table_download <- downloadHandler(
+
+        filename = "DL_Data.csv",
+
+        contentType = "csv",
+
+        content = function(file) {
+
+            write.csv(DL_DataTable(), file, row.names = FALSE)
+        }
+    )
+
 
     output$DL_Heatmap = renderPlot({
 
@@ -535,6 +564,8 @@ server = function(input,output) {
 
     })
 
+    DL_Biomarker_Table = reactiveVal()
+
     output$DL_Biomarkers = renderTable({
 
         if(is.null(DeepLearning_Data())) {
@@ -557,7 +588,22 @@ server = function(input,output) {
 
         dl_DEG_Table = dl_sO.markers %>% group_by(cluster) %>% slice_max(n = 2, order_by = avg_log2FC)
 
+        DL_Biomarker_Table(dl_DEG_Table)
+
         return(dl_DEG_Table)
     })
+
+
+    output$dl_bmTable <- downloadHandler(
+
+        filename = "DL_BiomarkerTable.csv",
+
+        contentType = "csv",
+
+        content = function(file) {
+
+            write.csv(DL_Biomarker_Table(), file, row.names = FALSE)
+        }
+    )
 
 }

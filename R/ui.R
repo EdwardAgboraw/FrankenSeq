@@ -247,6 +247,9 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                                     selectInput(inputId = "DL_cv", label = "T-SNE, UMAP or PCA Cluster Visualization", choices = c("umap", "tsne"), selected = "umap"),
 
+                                    helpText("Click here to download the complete Seurat Object as an RDS file"),
+                                    downloadButton("dl_seurat", "Download Object"),
+
                                 ),
 
                                 conditionalPanel(
@@ -254,6 +257,9 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                                     condition = "input.DL_Options == 'Cluster Data Table'",
 
                                     radioButtons(inputId = "DL_TableOptions", label = "Select a Table", choices = c("Summary Report", "Full Data Table")),
+
+                                    helpText("Click here to download the current Table Option as a CSV"),
+                                    downloadButton("dl_table_download", "Download Table"),
 
                                 ),
 
@@ -265,6 +271,17 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                                     numericInput(inputId = "DL_LFC", label = "Select a Log Fold Change Threshold;", value = 0.25, step = 0.05),
 
                                     numericInput(inputId = "DL_minPC", label = "Select a minimum percent expression value; ", value = 0.25, step = 0.05),
+
+
+                                ),
+
+                                conditionalPanel(
+
+                                    condition = "input.DL_Options == 'Cluster Biomarker Table'",
+
+                                    helpText("Click here to download the Cluster Biomarker Table as a PNG"),
+                                    downloadButton("dl_bmTable", "Download Table"),
+
 
                                 ),
 
