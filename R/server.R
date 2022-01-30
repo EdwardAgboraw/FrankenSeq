@@ -509,4 +509,55 @@ server = function(input,output) {
 
     })
 
+    output$DL_Heatmap = renderPlot({
+
+        if(is.null(DeepLearning_Data())) {
+
+            return(NULL)
+
+        }
+
+        #Variables
+
+        sO = DeepLearning_Data()
+
+        dl_lfc = input$DL_LFC
+
+        dl_minpct = input$DL_minPC
+
+        dl_sO.markers <- FindAllMarkers(sO, only.pos = TRUE, min.pct = dl_minpct, logfc.threshold = dl_lfc)
+
+        dl_sO.markers %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
+
+        dl_degHeatMap = DoHeatmap(sO, features = top10$gene) + NoLegend()
+
+        return(dl_degHeatMap)
+
+    })
+
+    output$DL_Biomarkers = renderTable({
+
+        if(is.null(DeepLearning_Data())) {
+
+            return(NULL)
+
+        }
+
+        #Variables
+
+        sO = DeepLearning_Data()
+
+        dl_lfc = input$DL_LFC
+
+        dl_minpct = input$DL_minPC
+
+        dl_sO.markers <- FindAllMarkers(sO, only.pos = TRUE, min.pct = dl_minpct, logfc.threshold = dl_lfc)
+
+        dl_sO.markers %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
+
+        dl_DEG_Table = dl_sO.markers %>% group_by(cluster) %>% slice_max(n = 2, order_by = avg_log2FC)
+
+        return(dl_DEG_Table)
+    })
+
 }
