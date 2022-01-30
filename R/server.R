@@ -489,7 +489,7 @@ server = function(input,output) {
 
             return(Dsummary)
 
-        } else {
+       } else {
 
             results = as.data.frame(sO@active.ident)
 
@@ -499,14 +499,13 @@ server = function(input,output) {
 
             colnames(results) = c("Cell Label", "Cluster")
 
-            #results = results[order(results$Cluster), ]
+            results = results[order(results$Cluster), ]
 
             FinalDataTable(results)
 
             return(results)
 
         }
-
 
     })
 

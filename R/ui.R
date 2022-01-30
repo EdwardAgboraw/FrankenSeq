@@ -282,7 +282,7 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                                 conditionalPanel( #DL Data Tables
 
-                                    condition = "input.DL_Options == 'Cluster Table'",
+                                    condition = "input.DL_Options == 'Cluster Data Table'",
 
                                     tableOutput('DL_Table') %>% withSpinner(color="#0dc5c1", hide.ui = FALSE),
 
