@@ -168,7 +168,7 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                             ),
                    ),
 
-                   tabPanel("Cluster Data", #Clustering Results Tab
+                   tabPanel("Results", #Clustering Results Tab
 
                             sidebarPanel(
 
