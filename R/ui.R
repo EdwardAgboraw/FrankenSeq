@@ -28,7 +28,8 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                             ),
 
                             mainPanel(
-                                plotOutput("dgraph") %>% withSpinner(color="#0dc5c1", hide.ui = FALSE)
+                                plotOutput("dgraph") %>% withSpinner(color="#0dc5c1", hide.ui = FALSE),
+
                             )
                    ),
 
