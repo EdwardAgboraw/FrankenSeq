@@ -202,7 +202,19 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                                 numericInput(inputId = "LFC", label = "Select a Log Fold Change Threshold;", value = 0.25, step = 0.05),
 
-                                numericInput(inputId = "minPC", label = "Select a minimum percent expression value; ", value = 0.25, step = 0.05)
+                                numericInput(inputId = "minPC", label = "Select a minimum percent expression value; ", value = 0.25, step = 0.05),
+
+
+                                conditionalPanel(
+
+                                    condition = "input.DEG_Options == 'Table'",
+
+                                    helpText("Click here to download the Table as a CSV"),
+                                    downloadButton("deg_biomarkers", "Download Table"),
+
+                                ),
+
+
 
                             ),
 

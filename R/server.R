@@ -412,6 +412,8 @@ server = function(input,output) {
 
     })
 
+    DEG_Marker_Table = reactiveVal()
+
     output$degTable = renderTable({
 
         sO = Clustered_Data()
@@ -424,9 +426,24 @@ server = function(input,output) {
 
         DEG_Table = sO.markers %>% group_by(cluster) %>% slice_max(n = 2, order_by = avg_log2FC)
 
+        DEG_Marker_Table(DEG_Table)
+
         return(DEG_Table)
 
     })
+
+    output$deg_biomarkers <- downloadHandler(
+
+        filename = "ClusterBiomarkers.csv",
+
+        contentType = "csv",
+
+        content = function(file) {
+
+            write.csv(DEG_Marker_Table, file, row.names = FALSE)
+        }
+    )
+
 
     #Deep Learning
 
