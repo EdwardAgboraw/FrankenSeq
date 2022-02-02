@@ -162,7 +162,7 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                             mainPanel(
 
-                                selectInput(inputId = "cv", label = "T-SNE, UMAP or PCA Cluster Visualization", choices = c("umap", "tsne"), selected = "umap"),
+                                selectInput(inputId = "cv", label = "T-SNE or UMAP Cluster Visualization", choices = c("umap", "tsne"), selected = "umap"),
 
 
                                 plotOutput("SClusters") %>% withSpinner(color="#0dc5c1", hide.ui = FALSE)
@@ -258,7 +258,7 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                                     numericInput(inputId = "DL_ncore", label = "Choose the number of cores to use in the analysis", value = 4, min = 1, step = 1),
 
-                                    selectInput(inputId = "DL_cv", label = "T-SNE, UMAP or PCA Cluster Visualization", choices = c("umap", "tsne"), selected = "umap"),
+                                    selectInput(inputId = "DL_cv", label = "T-SNE, or UMAP Cluster Visualization", choices = c("umap", "tsne"), selected = "umap"),
 
                                     helpText("Click here to download the complete Seurat Object as an RDS file"),
                                     downloadButton("dl_seurat", "Download Object"),
