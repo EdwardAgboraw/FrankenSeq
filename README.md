@@ -31,5 +31,5 @@ The FrankenSeq pipeline is reactive - any changes made to earlier steps in the a
 
 There are two exceptions to the above. The "Cluster Validation" Tab is fully optional - "Cluster Analysis" can be done with or without it having been run first. And the "Deep Learning" tab is an alternative to "Cluster Analysis", and as such takes its input from the "Dimension Reduction" tab (instead of the tabs directly preceeding it).
 
-The basic structure of the FrankenSeq Analysis Pipeline is shown below:
+
 
