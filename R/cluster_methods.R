@@ -288,7 +288,7 @@ autoEncoderClusterring = function(sO, noDim, kv, core_num, reductionMethod, meth
 
     expr_mat = as(expr_mat, "dgCMatrix")
 
-    expr_results = scDHA(expr_mat, seed = 1, sparse = TRUE, k = kv - 1, ncores = core_num) #clustering step
+    expr_results = scDHA(expr_mat, seed = 1, sparse = TRUE, k = kv, ncores = core_num) #clustering step
 
     clusters = expr_results$cluster
 
