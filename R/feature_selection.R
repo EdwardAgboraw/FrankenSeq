@@ -116,7 +116,9 @@ featureSelection = function(sO, fs_method, number_of_features) {
 
         sce = as.SingleCellExperiment(sO)
 
-        exprsn = rowMeans(logcounts(sce))
+        LogCounts = as.array(logcounts(sce))
+
+        exprsn = rowMeans(LogCounts)
 
         keep = order(exprsn, decreasing = TRUE)[seq_len(number_of_features)]
 
