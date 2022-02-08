@@ -11,6 +11,8 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                             sidebarPanel(
 
+                                radioButtons(inputId = "Help_QC", label = "Select an Option", choices = c("Help", "Run Tab"), selected = "Help"),
+
                                 selectInput(inputId = "FileType", label = "Select Input File Type", choices = c("RDS (Existing Seurat Object)", "CSV (Gene x Cell Table)", "SingleCellExperiment Object (RDS)", "Read Count Data (CSV)"), selected = "RDS (Existing Seurat Object)"),
 
                                 fileInput(inputId = "rdata", label = "Select an input file", accept = ".rds", buttonLabel = "Browse...", placeholder = "No file selected..."),
@@ -37,6 +39,8 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                             sidebarPanel(
 
+                                radioButtons(inputId = "Help_FS", label = "Select an Option", choices = c("Help", "Run Tab"), selected = "Help"),
+
                                 selectInput(inputId = "FS", label = "Choose a Feature Selection method", choices = c("HVG - Seurat (vst)", "HVG - Seurat (mvp)", "HVG - Seurat (Dispersion)", "Drop-Out Based Feature Selection - M3Drop", "Gene-Gene Correlation Feature Selection (DubStepR)", "Feature Selection by Deviance (Scry)","Filter by Gene Expression"), selected = "HVG - Seurat (vst)"),
 
                                 #conditional Feature Selection Panels
@@ -57,6 +61,8 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                    tabPanel("Dimension Reduction", #Dimension Reduction Tab
 
                             sidebarPanel(
+
+                                radioButtons(inputId = "Help_DR", label = "Select an Option", choices = c("Help", "Run Tab"), selected = "Help"),
 
                                 selectInput(inputId = "dr", label = "Choose a Dimension Reduction method", choices = c("PCA (Seurat)", "GLM PCA (Residuals)", "GLM PCA"), selected = "PCA (Seurat)"),
 
@@ -84,9 +90,11 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                    ),
 
 
-                   tabPanel("Cluster Validation", #Dimension Reduction Tab
+                   tabPanel("Cluster Validation", #Cluster Validation Tab
 
                             sidebarPanel(
+
+                                radioButtons(inputId = "Help_CV", label = "Select an Option", choices = c("Help", "Run Tab"), selected = "Help"),
 
                                 radioButtons(inputId = "CVOptions", label = "Select a Plot", choices = c("Estimate K with SC3","Elbow Plot", "Silhouette Plot")),
 
@@ -109,6 +117,8 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                    tabPanel("Cluster Analysis", #Cluster Analysis Tab
 
                             sidebarPanel(
+
+                                radioButtons(inputId = "Help_CA", label = "Select an Option", choices = c("Help", "Run Tab"), selected = "Help"),
 
                                 selectInput(inputId = "CM", label = "Choose an Unsupervised Clustering Algorithm", choices = c("K-Nearest Neighbor (Seurat)", "Graph Based Hierarchical Clustering (HGC)", "Hierarchical Clustering", "K-means Clustering", "Density Peak Clustering (Monocle)", "Consensus Clustering (SC3)", "Hierarchical AutoEncoder")),
 
@@ -173,6 +183,8 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                             sidebarPanel(
 
+                                radioButtons(inputId = "Help_R", label = "Select an Option", choices = c("Help", "Run Tab"), selected = "Help"),
+
                                 radioButtons(inputId = "TableOptions", label = "Select a Table", choices = c("Summary Report", "Full Data Table")),
 
                                 helpText("Current Pipeline"),
@@ -195,9 +207,11 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                    ),
 
-                   tabPanel("DEG Analysis", #Dimension Reduction Tab
+                   tabPanel("DEG Analysis", #DEG ANALYSIS Tab
 
                             sidebarPanel(
+
+                                radioButtons(inputId = "Help_DA", label = "Select an Option", choices = c("Help", "Run Tab"), selected = "Help"),
 
                                 radioButtons(inputId = "DEG_Options", label = "Select an Option", choices = c("Heatmap","Table")),
 
@@ -244,6 +258,8 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                    tabPanel("Deep Learning", #Deep Learning Tab
 
                             sidebarPanel(
+
+                                radioButtons(inputId = "Help_DL", label = "Select an Option", choices = c("Help", "Run Tab"), selected = "Help"),
 
                                 radioButtons(inputId = "DL_Options", label = "Select an Option", choices = c("Cluster Analysis","Cluster Data Table", "Heatmap", "Cluster Biomarker Table"), selected = "Cluster Analysis"),
 

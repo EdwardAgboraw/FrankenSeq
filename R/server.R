@@ -23,7 +23,7 @@ server = function(input,output) {
 
     output$dgraph = renderPlot({
 
-        if(is.null(input$rdata)) {
+        if(is.null(input$rdata) || input$Help_QC == "Help") {
 
             return(NULL)
 
@@ -74,7 +74,7 @@ server = function(input,output) {
 
     output$FSPlot = renderPlot({
 
-        if(is.null(filtered_Data())) {
+        if(is.null(filtered_Data()) || input$Help_FS == "Help") {
 
             return(NULL)
 
@@ -104,7 +104,7 @@ server = function(input,output) {
 
     output$drPlot = renderPlot({
 
-        if(is.null(FeatureGenes())) {
+        if(is.null(FeatureGenes()) || input$Help_DR == "Help") {
 
             return(NULL)
 
@@ -154,7 +154,7 @@ server = function(input,output) {
 
     output$cvPlot = renderPlot({
 
-        if(input$CVOptions == "Estimate K with SC3" || is.null(DimRData())) {
+        if(input$CVOptions == "Estimate K with SC3" || is.null(DimRData()) || input$Help_CV == "Help") {
 
             return(NULL)
 
@@ -179,7 +179,7 @@ server = function(input,output) {
 
     output$sc3_estimated_k_value <- renderText({
 
-        if(input$CVOptions != "Estimate K with SC3" || is.null(DimRData())) {
+        if(input$CVOptions != "Estimate K with SC3" || is.null(DimRData()) || input$Help_CV == "Help") {
 
             return(NULL)
 
@@ -203,7 +203,7 @@ server = function(input,output) {
 
     output$SClusters = renderPlot({
 
-        if(is.null(DimRData())) {
+        if(is.null(DimRData()) || input$Help_CA == "Help") {
 
             return(NULL)
 
@@ -298,7 +298,7 @@ server = function(input,output) {
 
     output$table = renderTable({
 
-        if(is.null(Clustered_Data())) {
+        if(is.null(Clustered_Data()) || input$Help_R == "Help") {
 
             return(NULL)
 
@@ -390,7 +390,7 @@ server = function(input,output) {
 
     output$degPlot = renderPlot({
 
-        if(is.null(Clustered_Data())) {
+        if(is.null(Clustered_Data()) || input$Help_DA == "Help") {
 
             return(NULL)
 
@@ -415,6 +415,12 @@ server = function(input,output) {
     DEG_Marker_Table = reactiveVal()
 
     output$degTable = renderTable({
+
+        if(is.null(Clustered_Data()) || input$Help_DA == "Help") {
+
+            return(NULL)
+
+        }
 
         sO = Clustered_Data()
 
@@ -451,7 +457,7 @@ server = function(input,output) {
 
     output$DL_Plot = renderPlot({
 
-        if(is.null(DimRData())) {
+        if(is.null(DimRData()) || input$Help_DL == "Help") {
 
             return(NULL)
 
@@ -500,7 +506,7 @@ server = function(input,output) {
 
     output$DL_Table = renderTable({
 
-        if(is.null(DeepLearning_Data())) {
+        if(is.null(DeepLearning_Data()) || input$Help_DL == "Help") {
 
             return(NULL)
 
@@ -557,7 +563,7 @@ server = function(input,output) {
 
     output$DL_Heatmap = renderPlot({
 
-        if(is.null(DeepLearning_Data())) {
+        if(is.null(DeepLearning_Data()) || input$Help_DL == "Help") {
 
             return(NULL)
 
@@ -585,7 +591,7 @@ server = function(input,output) {
 
     output$DL_Biomarkers = renderTable({
 
-        if(is.null(DeepLearning_Data())) {
+        if(is.null(DeepLearning_Data()) || input$Help_DL == "Help") {
 
             return(NULL)
 
