@@ -30,6 +30,14 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                             ),
 
                             mainPanel(
+
+                                conditionalPanel( #QC Help Text
+
+                                    condition = "input.Help_QC == 'Help'",
+
+                                    textOutput("QC_Help_Text")
+                                ),
+
                                 plotOutput("dgraph") %>% withSpinner(color="#0dc5c1", hide.ui = FALSE),
 
                             )
@@ -53,6 +61,14 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                             ),
 
                             mainPanel(
+
+                                conditionalPanel( #DL Help Text
+
+                                    condition = "input.Help_FS == 'Help'",
+
+                                    textOutput("FS_Help_Text")
+                                ),
+
                                 plotOutput("FSPlot") %>% withSpinner(color="#0dc5c1", hide.ui = FALSE),
                             )
 
@@ -84,6 +100,13 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                                 ),
 
+                                conditionalPanel( #DR Help Text
+
+                                    condition = "input.Help_DR == 'Help'",
+
+                                    textOutput("DR_Help_Text")
+                                ),
+
                                 plotOutput("drPlot") %>% withSpinner(color="#0dc5c1", hide.ui = FALSE),
                             )
 
@@ -103,6 +126,13 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                             ),
 
                             mainPanel(
+
+                                conditionalPanel( #CV Help Text
+
+                                    condition = "input.Help_CV == 'Help'",
+
+                                    textOutput("CV_Help_Text")
+                                ),
 
                                 textOutput("sc3_estimated_k_value") %>% withSpinner(color="#0dc5c1", hide.ui = FALSE),
 
@@ -174,6 +204,13 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                                 selectInput(inputId = "cv", label = "T-SNE or UMAP Cluster Visualization", choices = c("umap", "tsne"), selected = "umap"),
 
+                                conditionalPanel( #CA Help Text
+
+                                    condition = "input.Help_CA == 'Help'",
+
+                                    textOutput("CA_Help_Text")
+                                ),
+
 
                                 plotOutput("SClusters") %>% withSpinner(color="#0dc5c1", hide.ui = FALSE)
                             ),
@@ -201,6 +238,13 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                             ),
 
                             mainPanel(
+
+                                conditionalPanel( #DL Help Text
+
+                                    condition = "input.Help_R == 'Help'",
+
+                                    textOutput("R_Help_Text")
+                                ),
 
                                 tableOutput("table"),
                             ),
@@ -235,6 +279,13 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                             mainPanel(
 
+                                conditionalPanel( #DA Help Text
+
+                                    condition = "input.Help_DA == 'Help'",
+
+                                    textOutput("DA_Help_Text")
+                                ),
+
                                 conditionalPanel(
 
                                     condition = "input.DEG_Options == 'Heatmap'",
@@ -266,7 +317,7 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                                 conditionalPanel(
 
-                                    condition = "input.DL_Options == 'Cluster Analysis'",
+                                    condition = "input.DL_Options == 'Cluster Analysis' || input$Help_DL == 'Help'",
 
                                     numericInput(inputId = "DL_Knumber", label = "Select the desired number of clusters;", value = 8, step = 1, min = 1),
 
@@ -317,6 +368,13 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                             ),
 
                             mainPanel(
+
+                                conditionalPanel( #DL Help Text
+
+                                    condition = "input.Help_DL == 'Help'",
+
+                                    textOutput("DL_Help_Text")
+                                ),
 
                                 conditionalPanel( #DL Cluster Plot
 

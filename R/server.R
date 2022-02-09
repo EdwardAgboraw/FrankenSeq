@@ -629,4 +629,54 @@ server = function(input,output) {
         }
     )
 
+    #The Help Text
+
+    output$QC_Help_Text <- renderText(
+
+        "This is the QC Help Text."
+
+    )
+
+    output$FS_Help_Text <- renderText(
+
+        "This is the FS Help Test."
+
+    )
+
+    output$DR_Help_Text <- renderText(
+
+        "This is the DR Help Text."
+
+    )
+
+    output$CV_Help_Text <- renderText(
+
+        "This is the CV Help Text."
+
+    )
+
+    output$CA_Help_Text <- renderText(
+
+        "This is the CA Help Text."
+
+    )
+
+    output$R_Help_Text <- renderText(
+
+        "This is the R Help Text."
+
+    )
+
+    output$DA_Help_Text <- renderText(
+
+        "This is the DA Help Test."
+
+    )
+
+    output$DL_Help_Text <- renderText(
+
+        "This is the Deep Learning Help Test."
+
+    )
+
 }
