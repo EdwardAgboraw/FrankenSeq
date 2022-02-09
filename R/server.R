@@ -633,31 +633,34 @@ server = function(input,output) {
 
     output$QC_Help_Text <- renderText(
 
-        "This is the QC Help Text."
+        "This is the Data Processing Tab. Accepted inputs include Seurat/Single Cell Experiment Objects (as RDS files)
+        and Gene x Cell matrices (as CSV files). 'Quality Control' generates violin plots visualizing the QC metrics of the raw input data.
+        'Data Filtration' trims cells from the data according to user defined Feature Count and % Mitochondrial DNA limits."
 
     )
 
     output$FS_Help_Text <- renderText(
 
-        "This is the FS Help Test."
+        "This is the Feature Selection Tab. "
 
     )
 
     output$DR_Help_Text <- renderText(
 
-        "This is the DR Help Text."
+        "This is the Dimension Reduction Tab."
 
     )
 
     output$CV_Help_Text <- renderText(
 
-        "This is the CV Help Text."
+        "This is the Cluster Validation Tab. This tab estimates the number of clusters in the data using either the Elbow or Silhouette Methods.
+        Cluster number can also be directly estimated using Tracy-Widom Theory of Random Matrices (via SC3)."
 
     )
 
     output$CA_Help_Text <- renderText(
 
-        "This is the CA Help Text."
+        "This is the Cluster Analysis Tab."
 
     )
 
@@ -669,13 +672,13 @@ server = function(input,output) {
 
     output$DA_Help_Text <- renderText(
 
-        "This is the DA Help Test."
+        "This is the Differentially Expressed Gene (DEG) Analysis Tab."
 
     )
 
     output$DL_Help_Text <- renderText(
 
-        "This is the Deep Learning Help Test."
+        "This is the Deep Learning Tab. This Tab represents a fully independent analysis pipeline."
 
     )
 
