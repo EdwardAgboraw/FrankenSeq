@@ -654,7 +654,8 @@ server = function(input,output) {
     output$CV_Help_Text <- renderText(
 
         "This is the Cluster Validation Tab. This tab estimates the number of clusters in the data using either the Elbow or Silhouette Methods.
-        Cluster number can also be directly estimated using Tracy-Widom Theory of Random Matrices (via SC3)."
+        Cluster number can also be directly estimated using the Tracy-Widom Theory of Random Matrices (via SC3). This tab is both time-intensive and optional -
+        this part of the pipeline can safely be skipped."
 
     )
 
