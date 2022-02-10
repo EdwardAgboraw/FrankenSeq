@@ -1,13 +1,14 @@
 Package: FrankenSeq
 Title: A user friendly and modular machine learning platform for scRNA-seq analysis
-Version: 0.0.0.9000
+Version: 0.99.0.
 Authors@R: 
     person(given = "Edward",
            family = "Agboraw",
            role = c("aut", "cre"),
            email = "edward.agboraw@gmail.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: FrankenSeq provides a modular platform for sc-RNA seq analysic. Users have access to variety of feature selection, dimension reduction and both traditional 
+machine learning and deep learning algorithms with which to analyze their data. Differentially Expressed Gene analysis and Cluster Validation is also possible within FrankenSeq.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
