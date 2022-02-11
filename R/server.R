@@ -1,5 +1,6 @@
 
-#The Server function - this is where the actual R-Script goes. This is what tells the app what to do.
+#The Server function.
+
 library(Seurat)
 library(monocle)
 library(SingleCellExperiment)
@@ -7,19 +8,14 @@ library(SC3)
 library(DUBStepR)
 library(M3Drop)
 
-#source('clusterMethods.R')
-#source('featureSelection.R')
-#source('dimensionReduction.R')
-#source('LoadData.R')
-
 server = function(input,output) {
 
     options(shiny.maxRequestSize=300*1024^2) #increase the max file limit
 
     #QUALITY CONTROL
 
-    RawData = reactiveVal()
-    filtered_Data = reactiveVal()
+    rawData <- reactiveVal()
+    filteredData <- reactiveVal()
 
     output$dgraph = renderPlot({
 
@@ -30,14 +26,14 @@ server = function(input,output) {
         }
 
         #input raw data
-        rdata = input$rdata
-        filePath = input$rdata$datapath
+        rdata <- input$rdata
+        filePath <- input$rdata$datapath
 
-        fileType = input$FileType
+        fileType <- input$FileType
 
-        rawdata = LoadData(fileType, filePath)
+        inputData <- LoadData(fileType, filePath)
 
-        RawData(rawdata)
+        rawData(inputData)
 
         #Data Processing
         minNum = input$Min_Features
@@ -45,22 +41,22 @@ server = function(input,output) {
         percentMT = input$Mitochondria
         nFeatures = input$nFeatures
 
-        filterdata = FilterData(RawData(), minNum, maxNum, percentMT, nFeatures)
+        cleanData <- FilterData(rawData(), minNum, maxNum, percentMT, nFeatures)
 
-        filtered_Data(filterdata)
+        filteredData(cleanData)
 
 
         if(input$DPOptions == "Quality Control") {
 
-            QCplots = VlnPlot(RawData(), features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+            qcPlots <- VlnPlot(rawData(), features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 
-            return(QCplots)
+            return(qcPlots)
 
         } else if (input$DPOptions == "Data Filtration") {
 
-            NewQCplots = VlnPlot(filtered_Data(), features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+            newQCplots <- VlnPlot(filteredData(), features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 
-            return(NewQCplots)
+            return(newQCplots)
 
         }
 
@@ -68,28 +64,28 @@ server = function(input,output) {
 
     #FEATURE SELECTION
 
-    FeatureGenes = reactiveVal()# DATASET 2
+    featureGenes <- reactiveVal()# DATASET 2
 
-    FeatureList = reactiveVal()
+    featureList <- reactiveVal()
 
     output$FSPlot = renderPlot({
 
-        if(is.null(filtered_Data()) || input$Help_FS == "Help") {
+        if(is.null(filteredData()) || input$Help_FS == "Help") {
 
             return(NULL)
 
         }
 
-        fs = input$FS
-        num_of_features = input$nFeatures
+        fs <- input$FS
+        num_of_features <- input$nFeatures
 
-        fs_results = featureSelection(filtered_Data(), fs, num_of_features)
+        fs_results <- featureSelection(filteredData(), fs, num_of_features)
 
-        FeatureGenes(fs_results$data)
+        featureGenes(fs_results$data)
 
-        FeatureList(fs_results$featurelist)
+        featureList(fs_results$featurelist)
 
-        fs_plot = fs_results$plot
+        fs_plot <- fs_results$plot
 
         return(fs_plot)
 
@@ -98,51 +94,51 @@ server = function(input,output) {
 
     #DIMENSION REDUCTION
 
-    DimRData = reactiveVal() # DATASET 3
+    dimRData <- reactiveVal() # DATASET 3
 
-    DimMethod = reactiveVal()
+    dimRMethod <- reactiveVal()
 
     output$drPlot = renderPlot({
 
-        if(is.null(FeatureGenes()) || input$Help_DR == "Help") {
+        if(is.null(featureGenes()) || input$Help_DR == "Help") {
 
             return(NULL)
 
         }
 
-        dimR = input$dr
+        dimR <- input$dr
 
-        O_type = input$DRG_options
+        graphType_DR <- input$DRG_options
 
-        L = input$L_value
+        L <- input$L_value
 
         if(dimR == "PCA (Seurat)") {
 
-            dr_data = PCA_DimR(FeatureGenes(), O_type)
+            dr_data <- PCA_DimR(featureGenes(), graphType_DR)
 
-            DimRData(dr_data$data)
+            dimRData(dr_data$data)
 
-            DimMethod(dr_data$method)
+            dimRMethod(dr_data$method)
 
             return(dr_data$plot)
 
         } else if(dimR == "GLM PCA") {
 
-            dr_data = GLM_PCA_DimR(FeatureGenes(), L)
+            dr_data <- GLM_PCA_DimR(featureGenes(), L)
 
-            DimRData(dr_data$data)
+            dimRData(dr_data$data)
 
-            DimMethod(dr_data$method)
+            dimRMethod(dr_data$method)
 
             return(dr_data$plot)
 
         } else if(dimR == "GLM PCA (Residuals)") {
 
-            dr_data = GLM_PCA_Residuals_DimR(FeatureGenes(), O_type)
+            dr_data <- GLM_PCA_Residuals_DimR(featureGenes(), graphType_DR)
 
-            DimRData(dr_data$data)
+            dimRData(dr_data$data)
 
-            DimMethod(dr_data$method)
+            dimRMethod(dr_data$method)
 
             return(dr_data$plot)
 
@@ -154,7 +150,7 @@ server = function(input,output) {
 
     output$cvPlot = renderPlot({
 
-        if(input$CVOptions == "Estimate K with SC3" || is.null(DimRData()) || input$Help_CV == "Help") {
+        if(input$CVOptions == "Estimate K with SC3" || is.null(dimRData()) || input$Help_CV == "Help") {
 
             return(NULL)
 
@@ -164,13 +160,13 @@ server = function(input,output) {
         library(ggplot2)
         library(factoextra)
 
-        plottype = input$CVOptions
+        graphType_CV <- input$CVOptions
 
-        maxK = input$maxK
+        maxK <- input$maxK
 
-        cvData = DimRData()
+        cvData <- dimRData()
 
-        clusterValPlot = clusterValidation(cvData, plottype, maxK)
+        clusterValPlot <- clusterValidation(cvData, graphType_CV, maxK)
 
         return(clusterValPlot)
     })
@@ -179,17 +175,17 @@ server = function(input,output) {
 
     output$sc3_estimated_k_value <- renderText({
 
-        if(input$CVOptions != "Estimate K with SC3" || is.null(DimRData()) || input$Help_CV == "Help") {
+        if(input$CVOptions != "Estimate K with SC3" || is.null(dimRData()) || input$Help_CV == "Help") {
 
             return(NULL)
 
         }
 
-        clusValData = DimRData()
+        clusValData <- dimRData()
 
-        k = sc3_estimate(clusValData)
+        k <- sc3_estimate(clusValData)
 
-        string = paste("Estimated number of clusters = ", k)
+        string <- paste("Estimated number of clusters = ", k)
 
         return(string)
 
@@ -199,106 +195,98 @@ server = function(input,output) {
 
     #CLUSTER ANALYSIS
 
-    Clustered_Data = reactiveVal() # DATASET 4
+    clusterData <- reactiveVal() # DATASET 4
 
     output$SClusters = renderPlot({
 
-        if(is.null(DimRData()) || input$Help_CA == "Help") {
+        if(is.null(dimRData()) || input$Help_CA == "Help") {
 
             return(NULL)
 
         }
 
-        sO = DimRData()#this object should have both the current feature gene and reduced dimension sets already loaded.
+        sO <- dimRData() #this object should have both the current feature gene and reduced dimension sets already loaded.
 
-        method1 = DimMethod()
+        reductionMethod <- dimRMethod() #formerly method1
 
-        method = input$CM
+        clusteringMethod <- input$CM #formerly method
 
-        reductionMethod = input$cv
+        graphType_CA <- input$cv #formerly reductionMethod
 
-        noDim = input$dimensions
+        noDim <- input$dimensions
 
-        res = input$resolution
+        res <- input$resolution
 
-        k_value = input$k_value
+        kValue <- input$k_value
 
-        core_number = input$ncore
+        coreNumber <- input$ncore
 
-        linkM = input$LM
+        linkM <- input$LM
 
-        hcOption = input$HCoptions
+        hcOption <- input$HCoptions
 
-        ha_fs_option = input$DLoptions
+        ha_fs_option <- input$DLoptions
 
-        ha_cl_option= input$DLoptions2
+        ha_cl_option <- input$DLoptions2
 
-        if (method == "K-Nearest Neighbor (Seurat)") {
+        if (clusteringMethod == "K-Nearest Neighbor (Seurat)") {
 
-            knn = seuratClustering(sO, noDim, res, reductionMethod, method1)
+            knn <- seuratClustering(sO, noDim, res, graphType_CA, reductionMethod)
 
-            Clustered_Data(knn$data)
+            clusterData(knn$data)
 
             return(knn$plot)
 
-        } else if (method == "Graph Based Hierarchical Clustering (HGC)") {
+        } else if (clusteringMethod == "Graph Based Hierarchical Clustering (HGC)") {
 
-            hgc = HGC_clustering(sO, k_value, noDim, reductionMethod, method1)
+            hgc <- HGC_clustering(sO, k_value, noDim, graphType_CA, reductionMethod)
 
-            Clustered_Data(hgc$data)
+            clusterData(hgc$data)
 
             return(hgc$plot)
 
-        } else if (method == "Hierarchical Clustering") {
+        } else if (clusteringMethod == "Hierarchical Clustering") {
 
-            hc = h_clustering(sO, linkM, noDim, reductionMethod, method1, k_value, hcOption)
+            hc <- h_clustering(sO, linkM, noDim, graphType_CA, reductionMethod, k_value, hcOption)
 
-            Clustered_Data(hc$data)
+            clusterData(hc$data)
 
             return(hc$plot)
 
-        } else if (method == "K-means Clustering") {
+        } else if (clusteringMethod == "K-means Clustering") {
 
-            km = km_clustering(sO, k_value, noDim, reductionMethod, method1)
+            km <- km_clustering(sO, k_value, noDim, graphType_CA, reductionMethod)
 
-            Clustered_Data(km$data)
+            clusterData(km$data)
 
             return(km$plot)
 
-        }  else if (method == "Density Peak Clustering (Monocle)") {
+        }  else if (clusteringMethod == "Density Peak Clustering (Monocle)") {
 
-            cd = monocleClustering(sO, k_value, noDim, reductionMethod, method1)
+            cd <- monocleClustering(sO, k_value, noDim, graphType_CA, reductionMethod)
 
-            Clustered_Data(cd$data)
+            clusterData(cd$data)
 
             return(cd$plot)
 
-        } else if (method == "Consensus Clustering (SC3)") {
+        } else if (clusteringMethod == "Consensus Clustering (SC3)") {
 
-            cc = consensus_clustering(sO, k_value, noDim, reductionMethod, method1)
+            cc <- consensus_clustering(sO, k_value, noDim, graphType_CA, reductionMethod)
 
-            Clustered_Data(cc$data)
+            clusterData(cc$data)
 
             return(cc$plot)
 
-        } else if (method == "Hierarchical AutoEncoder") {
-
-            ha = autoEncoderClusterring(sO, noDim, k_value, core_number, reductionMethod, method1) #ha_fs_option, ha_cl_option)
-
-            Clustered_Data(ha$data)
-
-            return(ha$plot)
-        }
-
-    })
+    }
+        })
 
     #OUTPUT DATA
 
-    FinalDataTable = reactiveVal()
+    resultsTable = reactiveVal()
 
     output$table = renderTable({
 
-        if(is.null(Clustered_Data()) || input$Help_R == "Help") {
+        if(is.null(clusterData()) || input$Help_R == "Help") {
 
             return(NULL)
 
@@ -306,37 +294,11 @@ server = function(input,output) {
 
         tableChoice = input$TableOptions
 
-        sO = Clustered_Data()
+        sO = clusterData()
 
-        if (tableChoice == "Summary Report") {
+        resultsTable = generateTable(sO, tableChoice)
 
-            Dsummary = table(Idents(sO))
-
-            Dsummary = as.data.frame(Dsummary)
-
-            colnames(Dsummary) = c("Cluster", "Frequency")
-
-            FinalDataTable(Dsummary)
-
-            return(Dsummary)
-
-        } else {
-
-            results = as.data.frame(sO@active.ident)
-
-            colnames(results) = "Cluster"
-
-            results = cbind(rownames(results), data.frame(results, row.names = NULL))
-
-            colnames(results) = c("Cell Label", "Cluster")
-
-            #results = results[order(results$Cluster), ]
-
-            FinalDataTable(results)
-
-            return(results)
-
-        }
+        return(resultsTable)
 
     })
 
@@ -352,37 +314,37 @@ server = function(input,output) {
 
     output$dlb <- downloadHandler(
 
-        filename = "FinalData.csv",
+        filename <- "FinalData.csv",
 
-        contentType = "csv",
+        contentType <- "csv",
 
-        content = function(file) {
+        content <- function(file) {
 
-            write.csv(FinalDataTable(), file, row.names = FALSE)
+            write.csv(resultsTable(), file, row.names = FALSE)
         }
     )
 
     output$FSdlb <- downloadHandler(
 
-        filename = "Selected_Features.txt",
+        filename <- "Selected_Features.txt",
 
-        contentType = "csv",
+        contentType <- "csv",
 
-        content = function(file) {
+        content <- function(file) {
 
-            write.csv(FeatureList(), file, row.names = FALSE)
+            write.csv(featureList(), file, row.names = FALSE)
         }
     )
 
     output$SOdlb <- downloadHandler(
 
-        filename = "FinalSeuratObject.txt",
+        filename <- "FinalSeuratObject.txt",
 
-        contentType = "RDS",
+        contentType<- "RDS",
 
-        content = function(file) {
+        content <- function(file) {
 
-            saveRDS(Clustered_Data(), file)
+            saveRDS(clusterData(), file)
         }
     )
 
@@ -390,74 +352,72 @@ server = function(input,output) {
 
     output$degPlot = renderPlot({
 
-        if(is.null(Clustered_Data()) || input$Help_DA == "Help") {
+        if(is.null(clusterData()) || input$Help_DA == "Help") {
 
             return(NULL)
 
         }
 
-        sO = Clustered_Data()
+        sO <- clusterData()
 
-        lfc = input$LFC
+        lfc <- input$LFC
 
-        minpct = input$minPC
+        minPCT <- input$minPC
 
-        sO.markers <- FindAllMarkers(sO, only.pos = TRUE, min.pct = minpct, logfc.threshold = lfc)
+        outputType <- input$DEG_Options
 
-        sO.markers %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
+        degResults = degAnalysis(sO, lfc, minPCT, outputType)
 
-        degHeatMap = DoHeatmap(sO, features = top10$gene) + NoLegend()
-
-        return(degHeatMap)
+        return(degResults)
 
     })
 
-    DEG_Marker_Table = reactiveVal()
+    degMarkerTable = reactiveVal()
 
     output$degTable = renderTable({
 
-        if(is.null(Clustered_Data()) || input$Help_DA == "Help") {
+        if(is.null(clusterData()) || input$Help_DA == "Help") {
 
             return(NULL)
 
         }
 
-        sO = Clustered_Data()
+        sO <- clusterData()
 
-        lfc = input$LFC
+        lfc <- input$LFC
 
-        minpct = input$minPC
+        minPCT <- input$minPC
 
-        sO.markers <- FindAllMarkers(sO, only.pos = TRUE, min.pct = minpct, logfc.threshold = lfc)
+        outputType <- input$DEG_Options
 
-        DEG_Table = sO.markers %>% group_by(cluster) %>% slice_max(n = 2, order_by = avg_log2FC)
+        degResults = degAnalysis(sO, lfc, minPCT, outputType)
 
-        DEG_Marker_Table(DEG_Table)
+        degMarkerTable(degResults)
 
-        return(DEG_Table)
+        return(degResults)
 
     })
 
     output$deg_biomarkers <- downloadHandler(
 
-        filename = "ClusterBiomarkers.csv",
+        filename <- "ClusterBiomarkers.csv",
 
-        contentType = "csv",
+        contentType <- "csv",
 
-        content = function(file) {
+        content <- function(file) {
 
-            write.csv(DEG_Marker_Table, file, row.names = FALSE)
+            write.csv(degMarkerTable, file, row.names = FALSE)
         }
     )
 
 
     #Deep Learning
 
-    DeepLearning_Data = reactiveVal()
+    deepLearningData <- reactiveVal()
 
-    output$DL_Plot = renderPlot({
+    output$DL_Plot <- renderPlot({
 
-        if(is.null(DimRData()) || input$Help_DL == "Help") {
+        if(is.null(dimRData()) || input$Help_DL == "Help") {
 
             return(NULL)
 
@@ -465,82 +425,82 @@ server = function(input,output) {
 
         #Variables
 
-        sO = DimRData()
+        sO <- dimRData()
 
-        k_value = input$DL_Knumber
+        kValue <- input$DL_Knumber
 
-        noDim = input$DL_dimensions
+        noDim <- input$DL_dimensions
 
-        core_number = input$DL_ncore
+        coreNumber <- input$DL_ncore
 
-        method1 = DimMethod()
+        reductionMethod <- dimRMethod() #formerly method1
 
-        reductionMethod = input$DL_cv
+        graphType_DL <- input$DL_cv #formerly reductionMethod
 
         #DL Function Call
 
-        ha = autoEncoderClusterring(sO, noDim, k_value, core_number, reductionMethod, method1) #ha_fs_option, ha_cl_option)
+        deepLearningResults <- autoEncoderClusterring(sO, noDim, kValue, coreNumber, graphType_DL, reductionMethod)
 
-        DeepLearning_Data(ha$data)
+        deepLearningData(deepLearningResults$data)
 
-        return(ha$plot)
+        return(deepLearningResults$plot)
 
     })
 
 
     output$dl_seurat <- downloadHandler(
 
-        filename = "DL_SeuratObject.txt",
+        filename <- "DL_SeuratObject.txt",
 
-        contentType = "RDS",
+        contentType <- "RDS",
 
-        content = function(file) {
+        content <- function(file) {
 
-            saveRDS(DeepLearning_Data(), file)
+            saveRDS(deepLearningData(), file)
         }
     )
 
 
 
-    DL_DataTable = reactiveVal()
+    resultsTable_DL = reactiveVal()
 
     output$DL_Table = renderTable({
 
-        if(is.null(DeepLearning_Data()) || input$Help_DL == "Help") {
+        if(is.null(deepLearningData()) || input$Help_DL == "Help") {
 
             return(NULL)
 
         }
 
-        sO = DeepLearning_Data()
+        sO = deepLearningData()
 
         tableChoice = input$DL_TableOptions
 
         if (tableChoice == "Summary Report") {
 
-            Dsummary = table(Idents(sO))
+            Dsummary <- table(Idents(sO))
 
-            Dsummary = as.data.frame(Dsummary)
+            Dsummary <- as.data.frame(Dsummary)
 
-            colnames(Dsummary) = c("Cluster", "Frequency")
+            colnames(Dsummary) <- c("Cluster", "Frequency")
 
-            DL_DataTable(Dsummary)
+            resultsTable_DL(Dsummary)
 
             return(Dsummary)
 
        } else {
 
-            results = as.data.frame(sO@active.ident)
+            results <- as.data.frame(sO@active.ident)
 
-            colnames(results) = "Cluster"
+            colnames(results) <- "Cluster"
 
-            results = cbind(rownames(results), data.frame(results, row.names = NULL))
+            results <- cbind(rownames(results), data.frame(results, row.names = NULL))
 
-            colnames(results) = c("Cell Label", "Cluster")
+            colnames(results) <- c("Cell Label", "Cluster")
 
-            results = results[order(results$Cluster), ]
+            results <- results[order(results$Cluster), ]
 
-            DL_DataTable(results)
+            resultsTable_DL(results)
 
             return(results)
         }
@@ -550,20 +510,20 @@ server = function(input,output) {
 
     output$dl_table_download <- downloadHandler(
 
-        filename = "DL_Data.csv",
+        filename <- "DL_Data.csv",
 
-        contentType = "csv",
+        contentType <- "csv",
 
-        content = function(file) {
+        content <- function(file) {
 
-            write.csv(DL_DataTable(), file, row.names = FALSE)
+            write.csv(resultsTable_DL(), file, row.names = FALSE)
         }
     )
 
 
     output$DL_Heatmap = renderPlot({
 
-        if(is.null(DeepLearning_Data()) || input$Help_DL == "Help") {
+        if(is.null(deepLearningData()) || input$Help_DL == "Help") {
 
             return(NULL)
 
@@ -571,23 +531,23 @@ server = function(input,output) {
 
         #Variables
 
-        sO = DeepLearning_Data()
+        sO <- deepLearningData()
 
-        dl_lfc = input$DL_LFC
+        lfc_DL <- input$DL_LFC
 
-        dl_minpct = input$DL_minPC
+        minPCT_DL <- input$DL_minPC
 
-        dl_sO.markers <- FindAllMarkers(sO, only.pos = TRUE, min.pct = dl_minpct, logfc.threshold = dl_lfc)
+        sO.markers_DL <- FindAllMarkers(sO, only.pos = TRUE, min.pct = minPCT_DL, logfc.threshold = lfc_DL)
 
-        dl_sO.markers %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
+        sO.markers_DL %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
 
-        dl_degHeatMap = DoHeatmap(sO, features = top10$gene) + NoLegend()
+        degHeatMap_DL <- DoHeatmap(sO, features = top10$gene) + NoLegend()
 
-        return(dl_degHeatMap)
+        return(degHeatMap_DL)
 
     })
 
-    DL_Biomarker_Table = reactiveVal()
+    biomarkerTable_DL = reactiveVal()
 
     output$DL_Biomarkers = renderTable({
 
@@ -599,33 +559,33 @@ server = function(input,output) {
 
         #Variables
 
-        sO = DeepLearning_Data()
+        sO <- deepLearningData()
 
-        dl_lfc = input$DL_LFC
+        lfc_DL <- input$DL_LFC
 
-        dl_minpct = input$DL_minPC
+        minPCT_DL <- input$DL_minPC
 
-        dl_sO.markers <- FindAllMarkers(sO, only.pos = TRUE, min.pct = dl_minpct, logfc.threshold = dl_lfc)
+        sO.markers_DL <- FindAllMarkers(sO, only.pos = TRUE, min.pct = dl_minpct, logfc.threshold = dl_lfc)
 
-        dl_sO.markers %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
+        sO.markers_DL %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
 
-        dl_DEG_Table = dl_sO.markers %>% group_by(cluster) %>% slice_max(n = 2, order_by = avg_log2FC)
+        degTable_DL <- dl_sO.markers %>% group_by(cluster) %>% slice_max(n = 2, order_by = avg_log2FC)
 
-        DL_Biomarker_Table(dl_DEG_Table)
+        biomarkerTable_DL(degTable_DL)
 
-        return(dl_DEG_Table)
+        return(degTable_DL)
     })
 
 
     output$dl_bmTable <- downloadHandler(
 
-        filename = "DL_BiomarkerTable.csv",
+        filename <- "DL_BiomarkerTable.csv",
 
-        contentType = "csv",
+        contentType <- "csv",
 
-        content = function(file) {
+        content <- function(file) {
 
-            write.csv(DL_Biomarker_Table(), file, row.names = FALSE)
+            write.csv(biomarkerTable_DL(), file, row.names = FALSE)
         }
     )
 

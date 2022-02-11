@@ -150,7 +150,7 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                                 radioButtons(inputId = "Help_CA", label = "Select an Option", choices = c("Help", "Run Tab"), selected = "Help"),
 
-                                selectInput(inputId = "CM", label = "Choose an Unsupervised Clustering Algorithm", choices = c("K-Nearest Neighbor (Seurat)", "Graph Based Hierarchical Clustering (HGC)", "Hierarchical Clustering", "K-means Clustering", "Density Peak Clustering (Monocle)", "Consensus Clustering (SC3)", "Hierarchical AutoEncoder")),
+                                selectInput(inputId = "CM", label = "Choose an Unsupervised Clustering Algorithm", choices = c("K-Nearest Neighbor (Seurat)", "Graph Based Hierarchical Clustering (HGC)", "Hierarchical Clustering", "K-means Clustering", "Density Peak Clustering (Monocle)", "Consensus Clustering (SC3)")),
 
                                 numericInput(inputId = "dimensions", label = "Dimensionality: ", value = 10, max = 30, min = 2, step = 1),
 
@@ -166,7 +166,7 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                                 conditionalPanel(
 
-                                    condition = "input.CM == 'Graph Based Hierarchical Clustering (HGC)' || input.CM == 'K-means Clustering' || input.CM == 'Consensus Clustering (SC3)' || input.CM == 'Density Peak Clustering (Monocle)' || input.CM == 'Hierarchical Clustering' || input.CM == 'Hierarchical AutoEncoder'",
+                                    condition = "input.CM == 'Graph Based Hierarchical Clustering (HGC)' || input.CM == 'K-means Clustering' || input.CM == 'Consensus Clustering (SC3)' || input.CM == 'Density Peak Clustering (Monocle)' || input.CM == 'Hierarchical Clustering'",
 
                                     numericInput(inputId = "k_value", label = "Desired Number of Clusters", value = 4, min = 1, step = 1),
 
@@ -182,20 +182,6 @@ ui = fluidPage(theme = shinytheme("spacelab"),
                                     radioButtons(inputId = "HCoptions", label = "Select a methodology", choices = c("Use determined Cluster Number","Use dynamic tree cut")),
 
                                 ),
-
-                                conditionalPanel(
-
-                                    condition = "input.CM == 'Hierarchical AutoEncoder'",
-
-                                    numericInput(inputId = "ncore", label = "Choose the number of cores to use in the analysis", value = 4, min = 1, step = 1),
-
-                                    #radioButtons(inputId = "DLoptions", label = "Select a Feature Selection Method", choices = c("Use scDHA gene filtering","Use current feature selection algorithm")),
-
-                                    #radioButtons(inputId = "DLoptions2", label = "Select a Methodology", choices = c("Use determined Cluster Number","Use scDHA cluster auto-detection")),
-
-                                ),
-
-
 
 
                             ),

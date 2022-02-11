@@ -364,3 +364,62 @@ sc3_estimate = function(sO) {
     out = clusNum
 
 }
+
+generateTable = function(sO, tableType) {
+
+    if (tableType == "Summary Report") {
+
+        summaryTable <- table(Idents(sO))
+
+        summaryTable <- as.data.frame(summaryTable)
+
+        colnames(summaryTable) <- c("Cluster", "Frequency")
+
+        #resultsTable(dataSummary)
+
+        return(summaryTable)
+
+    } else {
+
+        fullTable <- as.data.frame(sO@active.ident)
+
+        colnames(fullTable) <- "Cluster"
+
+        fullTable <- cbind(rownames(fullTable), data.frame(fullTable, row.names = NULL))
+
+        colnames(fullTable) <- c("Cell Label", "Cluster")
+
+        #resultsTable(fullTable)
+
+        return(fullTable)
+
+    }
+
+}
+
+degAnalysis = function(sO, logFoldChange, minPercentage, outputOption) {
+
+    sO.markers <- FindAllMarkers(sO, only.pos = TRUE, min.pct = minPercentage, logfc.threshold = logFoldChange)
+
+
+    if (outputOption == "Heatmap") {
+
+        sO.markers %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
+
+        degHeatMap <- DoHeatmap(sO, features = top10$gene) + NoLegend()
+
+        return(degHeatMap)
+
+    } else {
+
+        degTable <- sO.markers %>% group_by(cluster) %>% slice_max(n = 2, order_by = avg_log2FC)
+
+        return(degTable)
+    }
+
+}
+
+
+
+
+
