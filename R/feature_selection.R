@@ -1,5 +1,5 @@
 
-featureSelection = function(sO, fs_method, number_of_features) {
+featureSelection = function(sO, fsMethod, featureNumber) {
 
     require(Seurat)
     require(M3Drop)
@@ -8,62 +8,68 @@ featureSelection = function(sO, fs_method, number_of_features) {
 
     results = reactiveValues()
 
-    if (fs_method == "HVG - Seurat (vst)") {
+    if (fsMethod == "HVG - Seurat (vst)") {
 
-        sO = FindVariableFeatures(sO, selection.method = "vst", nfeatures = number_of_features)
+        sO = FindVariableFeatures(sO, selection.method = "vst", nfeatures = featureNumber)
 
         feature_genes = sO@assays$RNA@var.features
 
-        fsplot = VariableFeaturePlot(sO)
+        vfPlot = VariableFeaturePlot(sO)
 
         top10 = head(VariableFeatures(sO), 10)
 
-        fs_plot = LabelPoints(plot = fsplot, points = top10, repel = TRUE)
+        fsPlot = LabelPoints(plot = vfPlot, points = top10, repel = TRUE)
+
+        #output
 
         results$data = sO
 
-        results$plot = fs_plot
+        results$plot = fsPlot
 
         results$featurelist = feature_genes
 
 
-    }  else if (fs_method ==   "HVG - Seurat (mvp)" ) {
+    }  else if (fsMethod ==   "HVG - Seurat (mvp)" ) {
 
         sO = FindVariableFeatures(sO, selection.method = "mvp")
 
         feature_genes = sO@assays$RNA@var.features
 
-        fsplot = VariableFeaturePlot(sO)
+        vfPlot = VariableFeaturePlot(sO)
 
         top10 = head(VariableFeatures(sO), 10)
 
-        fs_plot = LabelPoints(plot = fsplot, points = top10, repel = TRUE)
+        fsPlot = LabelPoints(plot = vfPlot, points = top10, repel = TRUE)
+
+        #output
 
         results$data = sO
 
-        results$plot = fs_plot
+        results$plot = fsPlot
 
         results$featurelist = feature_genes
 
-    } else if (fs_method ==   "HVG - Seurat (Dispersion)" ) {
+    } else if (fsMethod ==   "HVG - Seurat (Dispersion)" ) {
 
-        sO = FindVariableFeatures(sO, selection.method = "disp", nfeatures = number_of_features)
+        sO = FindVariableFeatures(sO, selection.method = "disp", nfeatures = featureNumber)
 
         feature_genes = sO@assays$RNA@var.features
 
-        fsplot = VariableFeaturePlot(sO)
+        vfPlot = VariableFeaturePlot(sO)
 
         top10 = head(VariableFeatures(sO), 10)
 
-        fs_plot = LabelPoints(plot = fsplot, points = top10, repel = TRUE)
+        fsPlot = LabelPoints(plot = vfPlot, points = top10, repel = TRUE)
+
+        #outputs
 
         results$data = sO
 
-        results$plot = fs_plot
+        results$plot = fsPlot
 
         results$featurelist = feature_genes
 
-    } else if (fs_method ==   "Drop-Out Based Feature Selection - M3Drop" ) {
+    } else if (fsMethod ==   "Drop-Out Based Feature Selection - M3Drop" ) {
 
         counts = sO@assays$RNA@counts
 
@@ -73,7 +79,7 @@ featureSelection = function(sO, fs_method, number_of_features) {
 
         DANB_fit = NBumiFitModel(count_mat)
 
-        NBDropFS = NBumiFeatureSelectionCombinedDrop(DANB_fit, method="fdr", ntop = number_of_features, suppress.plot=TRUE)
+        NBDropFS = NBumiFeatureSelectionCombinedDrop(DANB_fit, method="fdr", ntop = featureNumber, suppress.plot=TRUE)
 
         feature_genes = row.names(NBDropFS)
 
@@ -81,18 +87,20 @@ featureSelection = function(sO, fs_method, number_of_features) {
 
         top10 = head(feature_genes, 10)
 
-        fsplot = VariableFeaturePlot(sO)
+        vfPlot = VariableFeaturePlot(sO)
 
-        fs_plot = LabelPoints(plot = fsplot, points = top10, repel = TRUE)
+        fsPlot = LabelPoints(plot = vfPlot, points = top10, repel = TRUE)
+
+        #outputs
 
         results$data = sO
 
-        results$plot = fs_plot
+        results$plot = fsPlot
 
         results$featurelist = feature_genes
 
 
-    } else if (fs_method == "Gene-Gene Correlation Feature Selection (DubStepR)") {
+    } else if (fsMethod == "Gene-Gene Correlation Feature Selection (DubStepR)") {
 
         dubstepR.out = DUBStepR(input.data = sO@assays$RNA@data, min.cells = 0.05*ncol(sO), optimise.features = TRUE, k = 10, num.pcs = 20, error = 0)
 
@@ -102,17 +110,19 @@ featureSelection = function(sO, fs_method, number_of_features) {
 
         sO@assays$RNA@var.features = feature_genes
 
-        fsplot = VariableFeaturePlot(sO)
+        vfPlot = VariableFeaturePlot(sO)
 
-        fs_plot = LabelPoints(plot = fsplot, points = top10, repel = TRUE)
+        fsPlot = LabelPoints(plot = vfPlot, points = top10, repel = TRUE)
+
+        #outputs
 
         results$data = sO
 
-        results$plot = fs_plot
+        results$plot = fsPlot
 
         results$featurelist = feature_genes
 
-    } else if (fs_method == "Filter by Gene Expression") {
+    } else if (fsMethod == "Filter by Gene Expression") {
 
         sce = as.SingleCellExperiment(sO)
 
@@ -120,7 +130,7 @@ featureSelection = function(sO, fs_method, number_of_features) {
 
         exprsn = rowMeans(LogCounts)
 
-        keep = order(exprsn, decreasing = TRUE)[seq_len(number_of_features)]
+        keep = order(exprsn, decreasing = TRUE)[seq_len(featureNumber)]
 
         sce[keep, ]
 
@@ -130,18 +140,18 @@ featureSelection = function(sO, fs_method, number_of_features) {
 
         top10 = head(feature_genes, 10)
 
-        fsplot = VariableFeaturePlot(sO)
+        vfPlot = VariableFeaturePlot(sO)
 
-        fs_plot = LabelPoints(plot = fsplot, points = top10, repel = TRUE)
+        fsPlot = LabelPoints(plot = vfPlot, points = top10, repel = TRUE)
 
         #outputs
         results$data = sO
 
-        results$plot = fs_plot
+        results$plot = fsPlot
 
         results$featurelist = feature_genes
 
-    } else if (fs_method == "Feature Selection by Deviance (Scry)") {
+    } else if (fsMethod == "Feature Selection by Deviance (Scry)") {
 
         require(scry)
 
@@ -153,22 +163,22 @@ featureSelection = function(sO, fs_method, number_of_features) {
 
         dev_ranked_genes = rownames(sO)[order(deviantFeatures, decreasing = TRUE)]
 
-        topdev = head(dev_ranked_genes, number_of_features)
+        topdev = head(dev_ranked_genes, featureNumber)
 
         top10 = head(topdev, 10)
 
         sO@assays$RNA@var.features = topdev
 
         #create plot
-        fsplot = VariableFeaturePlot(sO)
+        vfPlot = VariableFeaturePlot(sO)
 
-        fs_plot = LabelPoints(plot = fsplot, points = top10, repel = TRUE)
+        fsPlot = LabelPoints(plot = vfPlot, points = top10, repel = TRUE)
 
         #outputs
 
         results$data = sO
 
-        results$plot = fs_plot
+        results$plot = fsPlot
 
         results$featurelist = topdev
 

@@ -77,9 +77,9 @@ server = function(input,output) {
         }
 
         fs <- input$FS
-        num_of_features <- input$nFeatures
+        featureNumber <- input$nFeatures
 
-        fs_results <- featureSelection(filteredData(), fs, num_of_features)
+        fs_results <- featureSelection(filteredData(), fs, featureNumber)
 
         featureGenes(fs_results$data)
 
