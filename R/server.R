@@ -1,13 +1,6 @@
 
 #The Server function.
 
-library(Seurat)
-library(monocle)
-library(SingleCellExperiment)
-library(SC3)
-library(DUBStepR)
-library(M3Drop)
-
 server = function(input,output) {
 
     options(shiny.maxRequestSize=300*1024^2) #increase the max file limit

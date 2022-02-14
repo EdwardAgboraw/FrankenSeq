@@ -22,9 +22,9 @@ Imports:
     magrittr,
     monocle,
     SC3,
-    shiny,
     shinycssloaders,
     shinythemes,
     SingleCellExperiment
 Depends: 
+    shiny,
     Seurat

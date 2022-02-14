@@ -1,8 +1,4 @@
 
-library(shiny)
-
-
-
 #' Launches the GUI
 #'
 #' @return
