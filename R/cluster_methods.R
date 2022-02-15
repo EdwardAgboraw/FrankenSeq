@@ -37,12 +37,9 @@ HGC_clustering = function(sO, k, noDim, reductionMethod, method) { #functional
 
     results = reactiveValues()
 
-    require(HGC)
-    require(Seurat)
-
     sO = FindNeighbors(sO, dims = 1:noDim, reduction = method)
 
-    sO = FindClusteringTree(sO, graph.type = "SNN")
+    sO = HGC::FindClusteringTree(sO, graph.type = "SNN")
 
     sO.tree <- sO@graphs$ClusteringTree
 
@@ -84,12 +81,14 @@ HGC_clustering = function(sO, k, noDim, reductionMethod, method) { #functional
 
 }
 
+#'@import SingleCellExperiment
+#'@import dynamicTreeCut
 h_clustering = function(sO, linkM, noDim, reductionMethod, method, numClusters, hc_option) {
 
     results = reactiveValues()
 
-    require(bluster)
-    require(dynamicTreeCut)
+    #require(bluster)
+    #require(dynamicTreeCut)
 
     if (reductionMethod == "umap") {
         sO = RunUMAP(sO, dims = 1:noDim, reduction = method)
@@ -112,7 +111,7 @@ h_clustering = function(sO, linkM, noDim, reductionMethod, method, numClusters, 
 
     if(hc_option == "Use determined Cluster Number") {
 
-        hp = HclustParam(method= linkM, cut.params = list(k = numClusters))    #cut.dynamic=TRUE)
+        hp = bluster::HclustParam(method= linkM, cut.params = list(k = numClusters))    #cut.dynamic=TRUE)
 
     } else {
 
@@ -136,11 +135,13 @@ h_clustering = function(sO, linkM, noDim, reductionMethod, method, numClusters, 
     out = results
 }
 
+#'
+#'@import SingleCellExperiment
 km_clustering = function(sO, k, noDim, reductionMethod, method) {
 
     results = reactiveValues()
 
-    require(bluster)
+    #require(bluster)
 
     if (reductionMethod == "umap") {
         sO = RunUMAP(sO, dims = 1:noDim, reduction = method)
@@ -162,7 +163,7 @@ km_clustering = function(sO, k, noDim, reductionMethod, method) {
 
     mat = mat[,1:noDim] #only pass the top components on to the clustering algorithm
 
-    sce.kmeans <- clusterRows(mat, KmeansParam(k))
+    sce.kmeans <- bluster::clusterRows(mat, KmeansParam(k))
 
     sO@meta.data$km_clusters = sce.kmeans
 
@@ -184,17 +185,15 @@ monocleClustering = function(sO, noK, noDim, reductionMethod, method) { #functio
 
     results = reactiveValues()
 
-    require(VGAM)
-
     sO = RunTSNE(object = sO, dims = 1:noDim, reduction = method)
 
     cds = as.CellDataSet(sO, assay = "RNA", reduction = "tsne") # easily convert Seurat to CDS
 
-    cds@expressionFamily = uninormal() # The correct expression family for normalized/scaled/etc... data
+    cds@expressionFamily = VGAM::uninormal() # The correct expression family for normalized/scaled/etc... data
 
     #extract variable features from Seurat and set Ordering Filter in Monocle
     var_genes = sO[["RNA"]]@var.features
-    cds = setOrderingFilter(cds, var_genes)
+    cds = monocle::setOrderingFilter(cds, var_genes)
 
     cds = monocle::clusterCells(cds, num_clusters = noK + 1)
 
@@ -219,6 +218,8 @@ monocleClustering = function(sO, noK, noDim, reductionMethod, method) { #functio
 }
 
 
+#'
+#'@import SingleCellExperiment
 consensus_clustering = function(sO, k, noDim, reductionMethod, method) {
 
     results = reactiveValues()
@@ -241,7 +242,7 @@ consensus_clustering = function(sO, k, noDim, reductionMethod, method) {
 
     #Run SC3 and extract results
 
-    sce = sc3(sce, ks = k, gene_filter = FALSE)
+    sce = SC3::sc3(sce, ks = k, gene_filter = FALSE)
 
     results_table = colData(sce)
 
@@ -276,7 +277,7 @@ autoEncoderClusterring = function(sO, noDim, kv, core_num, reductionMethod, meth
 
     results = reactiveValues()
 
-    require(scDHA)
+    #require(scDHA)
 
     expr_mat = GetAssayData(object = sO, slot = "counts") #extract data
 
@@ -288,7 +289,7 @@ autoEncoderClusterring = function(sO, noDim, kv, core_num, reductionMethod, meth
 
     expr_mat = as(expr_mat, "dgCMatrix")
 
-    expr_results = scDHA(expr_mat, seed = 1, sparse = TRUE, k = kv, ncores = core_num) #clustering step
+    expr_results = scDHA::scDHA(expr_mat, seed = 1, sparse = TRUE, k = kv, ncores = core_num) #clustering step
 
     clusters = expr_results$cluster
 
@@ -316,13 +317,9 @@ autoEncoderClusterring = function(sO, noDim, kv, core_num, reductionMethod, meth
 
 }
 
-
-
+#'
+#' @import ggplot2
 clusterValidation = function(sO, plot, maxK) {
-
-    require(NbClust)
-    require(ggplot2)
-    require(factoextra)
 
     all.genes = rownames(sO)
 
@@ -336,13 +333,13 @@ clusterValidation = function(sO, plot, maxK) {
 
     if(plot == "Elbow Plot") {
 
-        ElbowPlot = fviz_nbclust(SmallData, kmeans, method = "wss", k.max = maxK) + theme_minimal() + ggtitle("the Elbow Method")
+        ElbowPlot = factoextra::fviz_nbclust(SmallData, kmeans, method = "wss", k.max = maxK) + theme_minimal() + ggtitle("the Elbow Method")
 
         return(ElbowPlot)
 
     } else {
 
-        SilhouettePlot = fviz_nbclust(SmallData, kmeans, method = "silhouette", k.max = maxK) + theme_minimal() + ggtitle("The Silhouette Plot")
+        SilhouettePlot = factoextra::fviz_nbclust(SmallData, kmeans, method = "silhouette", k.max = maxK) + theme_minimal() + ggtitle("The Silhouette Plot")
 
         return(SilhouettePlot)
     }
@@ -350,14 +347,13 @@ clusterValidation = function(sO, plot, maxK) {
 }
 
 
+#'
+#'@import SingleCellExperiment
 sc3_estimate = function(sO) {
-
-    require(Seurat)
-    require(SingleCellExperiment)
 
     sce = as.SingleCellExperiment(sO)
 
-    sce = sc3_estimate_k(sce)
+    sce = sc3::sc3_estimate_k(sce)
 
     clusNum = sce@metadata$sc3$k_estimation
 

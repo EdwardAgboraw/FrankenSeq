@@ -1,10 +1,10 @@
 
 featureSelection = function(sO, fsMethod, featureNumber) {
 
-    require(Seurat)
-    require(M3Drop)
-    require(bluster)
-    require(DUBStepR)
+    #require(Seurat)
+    #require(M3Drop)
+    #require(bluster)
+    #require(DUBStepR)
 
     results = reactiveValues()
 
@@ -73,13 +73,13 @@ featureSelection = function(sO, fsMethod, featureNumber) {
 
         counts = sO@assays$RNA@counts
 
-        count_mat = NBumiConvertData(counts, is.counts=TRUE)
+        count_mat = M3Drop::NBumiConvertData(counts, is.counts=TRUE)
 
-        count_mat = NBumiConvertData(count_mat, is.counts=TRUE)
+        count_mat = M3Drop::NBumiConvertData(count_mat, is.counts=TRUE)
 
-        DANB_fit = NBumiFitModel(count_mat)
+        DANB_fit = M3Drop::NBumiFitModel(count_mat)
 
-        NBDropFS = NBumiFeatureSelectionCombinedDrop(DANB_fit, method="fdr", ntop = featureNumber, suppress.plot=TRUE)
+        NBDropFS = M3Drop::NBumiFeatureSelectionCombinedDrop(DANB_fit, method="fdr", ntop = featureNumber, suppress.plot=TRUE)
 
         feature_genes = row.names(NBDropFS)
 
@@ -102,7 +102,7 @@ featureSelection = function(sO, fsMethod, featureNumber) {
 
     } else if (fsMethod == "Gene-Gene Correlation Feature Selection (DubStepR)") {
 
-        dubstepR.out = DUBStepR(input.data = sO@assays$RNA@data, min.cells = 0.05*ncol(sO), optimise.features = TRUE, k = 10, num.pcs = 20, error = 0)
+        dubstepR.out = DUBStepR::DUBStepR(input.data = sO@assays$RNA@data, min.cells = 0.05*ncol(sO), optimise.features = TRUE, k = 10, num.pcs = 20, error = 0)
 
         feature_genes = dubstepR.out$optimal.feature.genes
 
@@ -153,7 +153,7 @@ featureSelection = function(sO, fsMethod, featureNumber) {
 
     } else if (fsMethod == "Feature Selection by Deviance (Scry)") {
 
-        require(scry)
+        #require(scry)
 
         m = GetAssayData(sO, slot = "counts", assay = "RNA")
 

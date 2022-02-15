@@ -1,8 +1,6 @@
 
 LoadData = function(filetype, filepath) {
 
-    require(Seurat)
-
     DataProcessing = reactiveValues()
 
     if(filetype == "RDS (Existing Seurat Object)") {

@@ -1,6 +1,8 @@
 
 #The Server function.
 
+#' @import magrittr
+#'@import dplyr
 server = function(input,output) {
 
     options(shiny.maxRequestSize=300*1024^2) #increase the max file limit
@@ -232,7 +234,7 @@ server = function(input,output) {
 
         } else if (clusteringMethod == "Graph Based Hierarchical Clustering (HGC)") {
 
-            hgc <- HGC_clustering(sO, k_value, noDim, graphType_CA, reductionMethod)
+            hgc <- HGC_clustering(sO, kValue, noDim, graphType_CA, reductionMethod)
 
             clusterData(hgc$data)
 
@@ -240,7 +242,7 @@ server = function(input,output) {
 
         } else if (clusteringMethod == "Hierarchical Clustering") {
 
-            hc <- h_clustering(sO, linkM, noDim, graphType_CA, reductionMethod, k_value, hcOption)
+            hc <- h_clustering(sO, linkM, noDim, graphType_CA, reductionMethod, kValue, hcOption)
 
             clusterData(hc$data)
 
@@ -248,7 +250,7 @@ server = function(input,output) {
 
         } else if (clusteringMethod == "K-means Clustering") {
 
-            km <- km_clustering(sO, k_value, noDim, graphType_CA, reductionMethod)
+            km <- km_clustering(sO, kValue, noDim, graphType_CA, reductionMethod)
 
             clusterData(km$data)
 
@@ -256,7 +258,7 @@ server = function(input,output) {
 
         }  else if (clusteringMethod == "Density Peak Clustering (Monocle)") {
 
-            cd <- monocleClustering(sO, k_value, noDim, graphType_CA, reductionMethod)
+            cd <- monocleClustering(sO, kValue, noDim, graphType_CA, reductionMethod)
 
             clusterData(cd$data)
 
@@ -264,7 +266,7 @@ server = function(input,output) {
 
         } else if (clusteringMethod == "Consensus Clustering (SC3)") {
 
-            cc <- consensus_clustering(sO, k_value, noDim, graphType_CA, reductionMethod)
+            cc <- consensus_clustering(sO, kValue, noDim, graphType_CA, reductionMethod)
 
             clusterData(cc$data)
 

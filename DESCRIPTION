@@ -18,6 +18,8 @@ RoxygenNote: 7.1.1
 Imports: 
     dplyr,
     DUBStepR,
+    dynamicTreeCut,
+    ggplot2,
     M3Drop,
     magrittr,
     monocle,

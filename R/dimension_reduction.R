@@ -33,11 +33,9 @@ PCA_DimR = function(sO, outputType) {
 
 GLM_PCA_DimR = function(sO, L) {
 
-    require(SeuratWrappers)
-
     dimReduc = reactiveValues()
 
-    sO = RunGLMPCA(sO, L = L) #no need to do any data scaling before-hand.
+    sO = SeuratWrappers::RunGLMPCA(sO, L = L) #no need to do any data scaling before-hand.
 
     r_dims = sO[["glmpca"]]
 
@@ -51,13 +49,11 @@ GLM_PCA_DimR = function(sO, L) {
 
     out = dimReduc
 
-
-
 }
 
+#'
+#'@import SingleCellExperiment
 GLM_PCA_Residuals_DimR = function(sO, outputType) {
-
-    require(scry)
 
     dimReduc = reactiveValues()
 
@@ -68,7 +64,7 @@ GLM_PCA_Residuals_DimR = function(sO, outputType) {
     sce = as.SingleCellExperiment(sO)
     rowData(sce)$feature_symbol = rownames(sO)
 
-    sce = nullResiduals(sce, assay="counts", type="deviance")
+    sce = scry::nullResiduals(sce, assay="counts", type="deviance")
 
     DCsce = sce[sO@assays$RNA@var.features,]
 
