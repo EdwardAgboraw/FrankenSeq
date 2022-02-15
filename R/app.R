@@ -8,10 +8,10 @@
 launch_FrankenSeq = function() {
 
     require(dplyr)
-    require(shiny)
-    require(Seurat)
-    require(shinythemes)
-    require(shinycssloaders)
+    #require(shiny)
+    #require(Seurat)
+    #require(shinythemes)
+    #require(shinycssloaders)
     require(magrittr)
 
     require(DUBStepR)
