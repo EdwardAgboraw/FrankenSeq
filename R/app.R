@@ -1,10 +1,11 @@
 
 #' Launches the GUI
 #'
-#' @return
+#'
 #' @export
-#'
-#'
+#' @import shiny
+#' @import shinythemes
+#' @import shinycssloaders
 launch_FrankenSeq = function() {
 
 shinyApp(

@@ -1,12 +1,12 @@
 #'The Server Function
 #'
-#' @param input
+#' @param input standard shiny parameter
 #'
-#' @param output
+#' @param output standard shiny parameter
 #'
 #'@import magrittr
 #'@import dplyr
-#'
+#'@import shiny
 #'@return None
 server = function(input,output) {
 
@@ -316,7 +316,7 @@ server = function(input,output) {
 
         content <- function(file) {
 
-            write.csv(resultsTable(), file, row.names = FALSE)
+            utils::write.csv(resultsTable(), file, row.names = FALSE)
         }
     )
 
@@ -328,7 +328,7 @@ server = function(input,output) {
 
         content <- function(file) {
 
-            write.csv(featureList(), file, row.names = FALSE)
+            utils::write.csv(featureList(), file, row.names = FALSE)
         }
     )
 
@@ -402,7 +402,7 @@ server = function(input,output) {
 
         content <- function(file) {
 
-            write.csv(degMarkerTable, file, row.names = FALSE)
+            utils::write.csv(degMarkerTable, file, row.names = FALSE)
         }
     )
 
@@ -512,7 +512,7 @@ server = function(input,output) {
 
         content <- function(file) {
 
-            write.csv(resultsTable_DL(), file, row.names = FALSE)
+            utils::write.csv(resultsTable_DL(), file, row.names = FALSE)
         }
     )
 
@@ -549,7 +549,7 @@ server = function(input,output) {
 
     output$DL_Biomarkers = renderTable({
 
-        if(is.null(DeepLearning_Data()) || input$Help_DL == "Help") {
+        if(is.null(deepLearningData()) || input$Help_DL == "Help") {
 
             return(NULL)
 
@@ -585,7 +585,7 @@ server = function(input,output) {
 
         content <- function(file) {
 
-            write.csv(biomarkerTable_DL(), file, row.names = FALSE)
+            utils::write.csv(biomarkerTable_DL(), file, row.names = FALSE)
         }
     )
 

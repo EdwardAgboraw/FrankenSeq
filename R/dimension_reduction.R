@@ -62,13 +62,13 @@ GLM_PCA_Residuals_DimR = function(sO, outputType) {
     #Generate Residual Data
 
     sce = as.SingleCellExperiment(sO)
-    rowData(sce)$feature_symbol = rownames(sO)
+    SingleCellExperiment::rowData(sce)$feature_symbol = rownames(sO)
 
     sce = scry::nullResiduals(sce, assay="counts", type="deviance")
 
     DCsce = sce[sO@assays$RNA@var.features,]
 
-    nr.data = assay(DCsce,"binomial_deviance_residuals") #
+    nr.data = SummarizedExperiment::assay(DCsce,"binomial_deviance_residuals") #
 
     #Run Seurat PCA
 

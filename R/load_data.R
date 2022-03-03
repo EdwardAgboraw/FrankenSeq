@@ -11,7 +11,7 @@ LoadData = function(filetype, filepath) {
 
     } else if (filetype == "CSV (Gene x Cell Table)") {
 
-        data = read.csv(file = filepath)
+        data = utils::read.csv(file = filepath)
 
         rawdata = CreateSeuratObject(counts = data) #assay = "RNA", names.field = NULL)
 

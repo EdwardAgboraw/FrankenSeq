@@ -7,9 +7,9 @@
 server(input, output)
 }
 \arguments{
-\item{input}{}
+\item{input}{standard shiny parameter}
 
-\item{output}{}
+\item{output}{standard shiny parameter}
 }
 \value{
 None

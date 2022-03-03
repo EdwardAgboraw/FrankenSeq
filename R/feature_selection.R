@@ -11,7 +11,7 @@ featureSelection = function(sO, fsMethod, featureNumber) {
 
         vfPlot = VariableFeaturePlot(sO)
 
-        top10 = head(VariableFeatures(sO), 10)
+        top10 = utils::head(VariableFeatures(sO), 10)
 
         fsPlot = LabelPoints(plot = vfPlot, points = top10, repel = TRUE)
 
@@ -32,7 +32,7 @@ featureSelection = function(sO, fsMethod, featureNumber) {
 
         vfPlot = VariableFeaturePlot(sO)
 
-        top10 = head(VariableFeatures(sO), 10)
+        top10 = utils::head(VariableFeatures(sO), 10)
 
         fsPlot = LabelPoints(plot = vfPlot, points = top10, repel = TRUE)
 
@@ -52,7 +52,7 @@ featureSelection = function(sO, fsMethod, featureNumber) {
 
         vfPlot = VariableFeaturePlot(sO)
 
-        top10 = head(VariableFeatures(sO), 10)
+        top10 = utils::head(VariableFeatures(sO), 10)
 
         fsPlot = LabelPoints(plot = vfPlot, points = top10, repel = TRUE)
 
@@ -80,7 +80,7 @@ featureSelection = function(sO, fsMethod, featureNumber) {
 
         sO@assays$RNA@var.features = feature_genes
 
-        top10 = head(feature_genes, 10)
+        top10 = utils::head(feature_genes, 10)
 
         vfPlot = VariableFeaturePlot(sO)
 
@@ -101,7 +101,7 @@ featureSelection = function(sO, fsMethod, featureNumber) {
 
         feature_genes = dubstepR.out$optimal.feature.genes
 
-        top10 = head(feature_genes, 10)
+        top10 = utils::head(feature_genes, 10)
 
         sO@assays$RNA@var.features = feature_genes
 
@@ -133,7 +133,7 @@ featureSelection = function(sO, fsMethod, featureNumber) {
 
         sO@assays$RNA@var.features = feature_genes
 
-        top10 = head(feature_genes, 10)
+        top10 = utils::head(feature_genes, 10)
 
         vfPlot = VariableFeaturePlot(sO)
 
@@ -158,9 +158,9 @@ featureSelection = function(sO, fsMethod, featureNumber) {
 
         dev_ranked_genes = rownames(sO)[order(deviantFeatures, decreasing = TRUE)]
 
-        topdev = head(dev_ranked_genes, featureNumber)
+        topdev = utils::head(dev_ranked_genes, featureNumber)
 
-        top10 = head(topdev, 10)
+        top10 = utils::head(topdev, 10)
 
         sO@assays$RNA@var.features = topdev
 

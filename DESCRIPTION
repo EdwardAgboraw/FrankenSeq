@@ -8,24 +8,34 @@ Authors@R:
            email = "edward.agboraw@gmail.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: FrankenSeq provides a modular platform for sc-RNA seq analysic. Users have access to variety of feature selection, dimension reduction and both traditional machine learning and deep learning algorithms with which to analyze their data. Differentially Expressed Gene analysis and Cluster Validation is also possible within FrankenSeq.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 biocViews:
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
+    Biobase,
+    bluster,
+    dendextend,
     dplyr,
     DUBStepR,
     dynamicTreeCut,
+    factoextra,
     ggplot2,
+    HGC,
     M3Drop,
     magrittr,
+    methods,
     monocle,
     SC3,
+    scDHA,
+    scry,
+    SeuratWrappers,
     SingleCellExperiment,
-    utils
+    SummarizedExperiment,
+    utils,
+    VGAM
 Depends: 
     shiny,
     Seurat,

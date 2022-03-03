@@ -6,9 +6,6 @@
 \usage{
 launch_FrankenSeq()
 }
-\value{
-
-}
 \description{
 Launches the GUI
 }

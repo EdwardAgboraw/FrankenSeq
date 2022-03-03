@@ -1,4 +1,21 @@
 
+#' Seurat (SNN Graph Based) Clustering Function
+#'
+#' @param sO the underlying Seurat object
+#' @param noDim the number of dimensions to be use in the clustering step
+#' @param res the Seurat resolution parameter
+#' @param reductionMethod the type of graph (UMAP or T-SNE) used to represent the results
+#' @param method the technique used to compress the data (PCA or GLM-PCA)
+#'
+#'@import Seurat
+#'
+#'@importFrom shiny reactiveValues
+#'
+#'
+#'
+#' @export
+#'
+#'
 seuratClustering = function(sO, noDim, res, reductionMethod, method) { #functional
 
     results = reactiveValues()
@@ -43,7 +60,7 @@ HGC_clustering = function(sO, k, noDim, reductionMethod, method) { #functional
 
     sO.tree <- sO@graphs$ClusteringTree
 
-    hgc_clusters = cutree(sO.tree, k = k)
+    hgc_clusters = dendextend::cutree(sO.tree, k = k)
 
     hgc_clusters = as.factor(hgc_clusters)
 
@@ -96,7 +113,7 @@ h_clustering = function(sO, linkM, noDim, reductionMethod, method, numClusters, 
 
     sce = as.SingleCellExperiment(sO)
 
-    rowData(sce)$feature_symbol = rownames(sO)
+    SummarizedExperiment::rowData(sce)$feature_symbol = rownames(sO)
 
     counts(sce) = as.matrix(counts(sce))
 
@@ -112,12 +129,12 @@ h_clustering = function(sO, linkM, noDim, reductionMethod, method, numClusters, 
 
     } else {
 
-        hp = HclustParam(method= linkM, cut.dynamic=TRUE)
+        hp = bluster::HclustParam(method= linkM, cut.dynamic=TRUE)
 
     }
 
 
-    sce.HClust <- clusterRows(mat, hp)
+    sce.HClust <- bluster::clusterRows(mat, hp)
 
     names(sce.HClust) <- colnames(sO)
     sO = AddMetaData(sO, sce.HClust, col.name = "h_clusters")
@@ -150,7 +167,7 @@ km_clustering = function(sO, k, noDim, reductionMethod, method) {
 
     sce = as.SingleCellExperiment(sO)
 
-    rowData(sce)$feature_symbol = rownames(sO)
+    SummarizedExperiment::rowData(sce)$feature_symbol = rownames(sO)
 
     counts(sce) = as.matrix(counts(sce))
 
@@ -160,7 +177,7 @@ km_clustering = function(sO, k, noDim, reductionMethod, method) {
 
     mat = mat[,1:noDim] #only pass the top components on to the clustering algorithm
 
-    sce.kmeans <- bluster::clusterRows(mat, KmeansParam(k))
+    sce.kmeans <- bluster::clusterRows(mat, bluster::KmeansParam(k))
 
     sO@meta.data$km_clusters = sce.kmeans
 
@@ -195,7 +212,7 @@ monocleClustering = function(sO, noK, noDim, reductionMethod, method) { #functio
     cds = monocle::clusterCells(cds, num_clusters = noK + 1)
 
     #Monocle-Seurat Conversion
-    Mclusters <- phenoData(cds)$Cluster
+    Mclusters <- Biobase::phenoData(cds)$Cluster
     names(Mclusters) <- colnames(sO)
     sO = AddMetaData(sO, Mclusters, col.name = "MClusters")
     sO@active.ident <- as.factor(Mclusters)
@@ -225,7 +242,7 @@ consensus_clustering = function(sO, k, noDim, reductionMethod, method) {
 
     sce = as.SingleCellExperiment(sO)
 
-    rowData(sce)$feature_symbol = rownames(sO)
+   SummarizedExperiment::rowData(sce)$feature_symbol = rownames(sO)
 
     counts(sce) = as.matrix(counts(sce))
 
@@ -284,7 +301,7 @@ autoEncoderClusterring = function(sO, noDim, kv, core_num, reductionMethod, meth
 
     expr_mat = log2(expr_mat + 1)
 
-    expr_mat = as(expr_mat, "dgCMatrix")
+    expr_mat = methods::as(expr_mat, "dgCMatrix")
 
     expr_results = scDHA::scDHA(expr_mat, seed = 1, sparse = TRUE, k = kv, ncores = core_num) #clustering step
 
@@ -350,7 +367,7 @@ sc3_estimate = function(sO) {
 
     sce = as.SingleCellExperiment(sO)
 
-    sce = sc3::sc3_estimate_k(sce)
+    sce = SC3::sc3_estimate_k(sce)
 
     clusNum = sce@metadata$sc3$k_estimation
 
