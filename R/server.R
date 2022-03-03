@@ -1,8 +1,13 @@
-
-#The Server function.
-
-#' @import magrittr
+#'The Server Function
+#'
+#' @param input
+#'
+#' @param output
+#'
+#'@import magrittr
 #'@import dplyr
+#'
+#'@return None
 server = function(input,output) {
 
     options(shiny.maxRequestSize=300*1024^2) #increase the max file limit
@@ -150,10 +155,6 @@ server = function(input,output) {
             return(NULL)
 
         }
-
-        library(NbClust)
-        library(ggplot2)
-        library(factoextra)
 
         graphType_CV <- input$CVOptions
 
@@ -532,11 +533,13 @@ server = function(input,output) {
 
         minPCT_DL <- input$DL_minPC
 
-        sO.markers_DL <- FindAllMarkers(sO, only.pos = TRUE, min.pct = minPCT_DL, logfc.threshold = lfc_DL)
+        degHeatMap_DL = degAnalysis(sO, lfc_DL, minPCT_DL, "Heatmap")
 
-        sO.markers_DL %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
+        #sO.markers_DL <- FindAllMarkers(sO, only.pos = TRUE, min.pct = minPCT_DL, logfc.threshold = lfc_DL)
 
-        degHeatMap_DL <- DoHeatmap(sO, features = top10$gene) + NoLegend()
+        #sO.markers_DL %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
+
+        #degHeatMap_DL <- DoHeatmap(sO, features = top10$gene) + NoLegend()
 
         return(degHeatMap_DL)
 
@@ -560,11 +563,13 @@ server = function(input,output) {
 
         minPCT_DL <- input$DL_minPC
 
-        sO.markers_DL <- FindAllMarkers(sO, only.pos = TRUE, min.pct = dl_minpct, logfc.threshold = dl_lfc)
+        #sO.markers_DL <- FindAllMarkers(sO, only.pos = TRUE, min.pct = dl_minpct, logfc.threshold = dl_lfc)
 
-        sO.markers_DL %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
+        #sO.markers_DL %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC) -> top10
 
-        degTable_DL <- dl_sO.markers %>% group_by(cluster) %>% slice_max(n = 2, order_by = avg_log2FC)
+        #degTable_DL <- dl_sO.markers %>% group_by(cluster) %>% slice_max(n = 2, order_by = avg_log2FC)
+
+        degTable_DL = degAnalysis(sO, lfc_DL, minPCT_DL, "Table")
 
         biomarkerTable_DL(degTable_DL)
 

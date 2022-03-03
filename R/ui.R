@@ -1,8 +1,4 @@
 
-library(shinythemes)
-library(shinycssloaders)
-library(magrittr)
-
 ui = fluidPage(theme = shinytheme("spacelab"),
                navbarPage(
                    "FrankenSeq",

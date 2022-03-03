@@ -1,11 +1,6 @@
 
 featureSelection = function(sO, fsMethod, featureNumber) {
 
-    #require(Seurat)
-    #require(M3Drop)
-    #require(bluster)
-    #require(DUBStepR)
-
     results = reactiveValues()
 
     if (fsMethod == "HVG - Seurat (vst)") {

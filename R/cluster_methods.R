@@ -87,9 +87,6 @@ h_clustering = function(sO, linkM, noDim, reductionMethod, method, numClusters, 
 
     results = reactiveValues()
 
-    #require(bluster)
-    #require(dynamicTreeCut)
-
     if (reductionMethod == "umap") {
         sO = RunUMAP(sO, dims = 1:noDim, reduction = method)
     } else {

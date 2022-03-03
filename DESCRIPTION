@@ -24,7 +24,8 @@ Imports:
     magrittr,
     monocle,
     SC3,
-    SingleCellExperiment
+    SingleCellExperiment,
+    utils
 Depends: 
     shiny,
     Seurat,
