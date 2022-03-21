@@ -40,4 +40,5 @@ Depends:
     shiny,
     Seurat,
     shinycssloaders,
-    shinythemes
+    shinythemes,
+    R (>= 2.10)

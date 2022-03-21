@@ -24,10 +24,27 @@ LoadData = function(filetype, filepath) {
         rawdata = as.Seurat(rawdata, data = NULL)
 
         rawdata[["percent.mt"]] = PercentageFeatureSet(rawdata, pattern = "^MT-")
+
+    } else if (filetype == "PBMC3k Test Data" & missing(filepath)) {
+
+        #pbmc3k = FrankenSeq:::pbmc3k
+
+        rawdata = pbmc3k
+
+        rawdata[["percent.mt"]] = PercentageFeatureSet(rawdata1, pattern = "^MT-")
     }
 
     out = rawdata
 
+}
+
+LoadData2 = function() {
+
+    rawdata = pbmc3k
+
+    rawdata[["percent.mt"]] = PercentageFeatureSet(rawdata, pattern = "^MT-")
+
+    out = rawdata
 }
 
 FilterData = function(rawdata, minNum, maxNum, percentMT, nFeatures) {

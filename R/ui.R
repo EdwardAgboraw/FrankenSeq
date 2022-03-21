@@ -9,9 +9,14 @@ ui = fluidPage(theme = shinytheme("spacelab"),
 
                                 radioButtons(inputId = "Help_QC", label = "Select an Option", choices = c("Help", "Run Tab"), selected = "Help"),
 
-                                selectInput(inputId = "FileType", label = "Select Input File Type", choices = c("RDS (Existing Seurat Object)", "CSV (Gene x Cell Table)", "SingleCellExperiment Object (RDS)", "Read Count Data (CSV)"), selected = "RDS (Existing Seurat Object)"),
+                                selectInput(inputId = "FileType", label = "Select Input File Type", choices = c("RDS (Existing Seurat Object)", "CSV (Gene x Cell Table)", "SingleCellExperiment Object (RDS)", "Read Count Data (CSV)", "PBMC3k Test Data"), selected = "RDS (Existing Seurat Object)"),
 
-                                fileInput(inputId = "rdata", label = "Select an input file", accept = ".rds", buttonLabel = "Browse...", placeholder = "No file selected..."),
+                                conditionalPanel(
+                                    condition = "input.FileType != 'PBMC3k Test Data'",
+
+                                    fileInput(inputId = "rdata", label = "Select an input file", accept = ".rds", buttonLabel = "Browse...", placeholder = "No file selected..."),
+
+                                ),
 
                                 radioButtons(inputId = "DPOptions", label = "Select an Analysis", choices = c("Quality Control", "Data Filtration")),
 

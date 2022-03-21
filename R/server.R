@@ -19,7 +19,7 @@ server = function(input,output) {
 
     output$dgraph = renderPlot({
 
-        if(is.null(input$rdata) || input$Help_QC == "Help") {
+        if(input$Help_QC == "Help") {
 
             return(NULL)
 
@@ -31,7 +31,16 @@ server = function(input,output) {
 
         fileType <- input$FileType
 
-        inputData <- LoadData(fileType, filePath)
+        if (fileType == 'PBMC3k Test Data') {
+
+            inputData = LoadData2()
+
+        } else {
+
+            inputData <- LoadData(fileType, filePath)
+
+        }
+
 
         rawData(inputData)
 
