@@ -38,7 +38,7 @@ LoadData = function(filetype, filepath) {
 
 }
 
-LoadData2 = function() {
+LoadTestData = function() {
 
     rawdata = pbmc3k
 

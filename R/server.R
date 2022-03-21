@@ -33,7 +33,7 @@ server = function(input,output) {
 
         if (fileType == 'PBMC3k Test Data') {
 
-            inputData = LoadData2()
+            inputData = LoadTestData()
 
         } else {
 
