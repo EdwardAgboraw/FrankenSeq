@@ -25,13 +25,6 @@ LoadData = function(filetype, filepath) {
 
         rawdata[["percent.mt"]] = PercentageFeatureSet(rawdata, pattern = "^MT-")
 
-    } else if (filetype == "PBMC3k Test Data" & missing(filepath)) {
-
-        #pbmc3k = FrankenSeq:::pbmc3k
-
-        rawdata = pbmc3k
-
-        rawdata[["percent.mt"]] = PercentageFeatureSet(rawdata1, pattern = "^MT-")
     }
 
     out = rawdata

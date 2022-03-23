@@ -604,19 +604,23 @@ server = function(input,output) {
 
         "This is the Data Processing Tab. Accepted inputs include Seurat/Single Cell Experiment Objects (as RDS files)
         and Gene x Cell matrices (as CSV files). 'Quality Control' generates violin plots visualizing the QC metrics of the raw input data.
-        'Data Filtration' trims cells from the data according to user defined Feature Count and % Mitochondrial DNA limits."
+        'Data Filtration' trims cells from the data according to user defined Feature Count and % Mitochondrial DNA limits.
+        Sample Test Data (PBMC3k) is also available here."
 
     )
 
     output$FS_Help_Text <- renderText(
 
-        "This is the Feature Selection Tab. "
+        "This is the Feature Selection Tab. Feature Selection identifies genes that show biologically revelent variation.
+        Here genes can be assessed and selected according to a variety of criteria, ranging from Variance to Drop-Out Rate."
 
     )
 
     output$DR_Help_Text <- renderText(
 
-        "This is the Dimension Reduction Tab."
+        "This is the Dimension Reduction Tab. The purpose of dimension reduction is to compress input data into a 'lower dimensional' representation more compatible
+        with clustering. This can be achieved here using either PCA, GLM-PCA (a modification of PCA optimized for UMI count data), or Residual PCA
+        (a fast approximation of the GLM-PCA algorithm)."
 
     )
 
