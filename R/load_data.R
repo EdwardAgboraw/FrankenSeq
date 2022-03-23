@@ -13,7 +13,7 @@ LoadData = function(filetype, filepath) {
 
         data = utils::read.csv(file = filepath)
 
-        rawdata = CreateSeuratObject(counts = data) #assay = "RNA", names.field = NULL)
+        rawdata = CreateSeuratObject(counts = data)
 
         rawdata[["percent.mt"]] = PercentageFeatureSet(rawdata, pattern = "^MT-")
 
