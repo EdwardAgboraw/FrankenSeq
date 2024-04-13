@@ -30,6 +30,7 @@ Imports:
     monocle,
     SC3,
     scDHA,
+    torch,
     scry,
     SeuratWrappers,
     SingleCellExperiment,
