@@ -36,7 +36,7 @@ Imports:
     utils,
     VGAM,
     R.utils,
-    Matrix
+    Matrix (>= 1.6.3)
 Depends: 
     shiny,
     Seurat,
@@ -45,5 +45,4 @@ Depends:
     R (>= 2.10)
 Remotes:
     satijalab/seurat-wrappers,
-    cysouw/qlcMatrix,
-    cvarrichio/Matrix.utils
+    cysouw/qlcMatrix
