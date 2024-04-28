@@ -37,11 +37,11 @@ Imports:
     VGAM
 Depends: 
     shiny,
-    Seurat (< 5.0.0),
+    Seurat,
     shinycssloaders,
     shinythemes,
     R (>= 2.10)
 Remotes:
-    bbbranjan/DUBStepR,
+    satijalab/seurat-wrappers,
     cysouw/qlcMatrix,
     cvarrichio/Matrix.utils
