@@ -44,3 +44,4 @@ Depends:
 Remotes:
     bbbranjan/DUBStepR,
     satijalab/seurat-wrappers
+    cvarrichio/Matrix.utils
