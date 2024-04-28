@@ -43,5 +43,5 @@ Depends:
     R (>= 2.10)
 Remotes:
     bbbranjan/DUBStepR,
-    satijalab/seurat-wrappers
+    satijalab/seurat-wrappers,
     cvarrichio/Matrix.utils
