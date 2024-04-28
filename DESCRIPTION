@@ -34,7 +34,8 @@ Imports:
     SingleCellExperiment,
     SummarizedExperiment,
     utils,
-    VGAM
+    VGAM,
+    R.utils
 Depends: 
     shiny,
     Seurat,
