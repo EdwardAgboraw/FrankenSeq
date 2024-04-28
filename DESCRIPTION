@@ -37,7 +37,7 @@ Imports:
     VGAM
 Depends: 
     shiny,
-    Seurat (== 4.0.2),
+    Seurat (< 5.0.0),
     shinycssloaders,
     shinythemes,
     R (>= 2.10)
