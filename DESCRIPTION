@@ -19,7 +19,6 @@ Imports:
     bluster,
     dendextend,
     dplyr,
-    DUBStepR,
     dynamicTreeCut,
     factoextra,
     ggplot2,
@@ -32,7 +31,6 @@ Imports:
     scDHA,
     torch,
     scry,
-    SeuratWrappers,
     SingleCellExperiment,
     SummarizedExperiment,
     utils,
@@ -43,3 +41,6 @@ Depends:
     shinycssloaders,
     shinythemes,
     R (>= 2.10)
+Remotes:
+    bbbranjan/DUBStepR,
+    satijalab/seurat-wrappers
