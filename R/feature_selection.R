@@ -99,6 +99,8 @@ featureSelection = function(sO, fsMethod, featureNumber) {
 
         dubstepR.out = DUBStepR::DUBStepR(input.data = sO@assays$RNA@data, min.cells = 0.05*ncol(sO), optimise.features = TRUE, k = 10, num.pcs = 20, error = 0)
 
+        message("dubstep has run!")
+
         feature_genes = dubstepR.out$optimal.feature.genes
 
         top10 = utils::head(feature_genes, 10)

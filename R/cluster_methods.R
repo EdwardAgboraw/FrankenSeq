@@ -1,4 +1,3 @@
-
 #' Seurat (SNN Graph Based) Clustering Function
 #'
 #' @param sO the underlying Seurat object
